@@ -1,0 +1,849 @@
+<#
+.SYNOPSIS
+    
+.DESCRIPTION
+    
+.LINK
+
+
+.NOTES
+          FileName: windowsfeaturemanagement.ps1
+          Solution: 
+          Author: Patrick Scherling
+          Contact: @Patrick Scherling
+          Primary: @Patrick Scherling
+          Created: 2024-12-01
+          Modified: 2025-07-02
+
+          Version - 0.0.1 - () - Initial first attempt. 
+		  Version - 0.0.2 - () - ADC Management
+		  Version - 0.0.3 - () - Hyper-V Management
+		  Version - 0.0.4 - () - Extending ADC Management with AD User Export and Import
+
+
+          TODO:
+			Coming Features
+				- HCI Management
+				- PKI Management
+
+.Example
+    
+#>
+
+# Log file path
+$logFile = "C:\_it\psc_sconfig\Logfiles\psc_sconfig.log"
+
+# Function to log messages with timestamps
+function Write-Log {
+	param (
+		[string]$Message
+	)
+	$timestamp = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
+	$logMessage = "[$timestamp] $Message"
+	#Write-Output $logMessage
+	$logMessage | Out-File -FilePath $logFile -Append
+}
+
+# Start logging
+Write-Log " Starting psc_sconfig - windowsfeature management..."
+
+
+###
+### ADC Menu
+###
+function Show-ADC-Menu {
+	Write-Log " Showing ADC Menu."
+    Clear-Host
+    Write-Host "`n-----------------------------------------------------------------------------------"
+    Write-Host "               Active-Directory Management"
+    Write-Host "-----------------------------------------------------------------------------------"
+
+    Write-Host "
+    Initial Server Configuration
+    1) DNS Server Setup
+    2) Domain-Controller Setup
+    3) Run Post-Setup Tasks
+    4) Add Server as Domain-Controller
+
+    Initial Active-Directory Setup
+    5) Import Standard GPO Set
+    6) Create Central Policy Store
+    7) Create Standard OU Template
+    8) Create Standard AD Groups
+    9) Create Standard AD Users
+    10) Add Standard AD Users to AD Groups
+    11) Link Standard GPOs with OUs
+	
+    Actions
+    12) Export AD Users into csv file
+    13) Import AD Users from csv file
+
+    14) Leave Management
+
+-----------------------------------------------------------------------------------"
+
+    do {
+    
+        $choice = Read-Host " Choose an Option (1-14)"
+		Write-Log " User Input: $choice"
+        switch ($choice) {
+            1 { DNS-Server-Setup }
+            2 { Domain-Controller-Setup }
+            3 { Post-Setup-Tasks }
+            4 { Add-DC }
+            5 { Import-GPO-Set }
+            6 { Create-Central-Policy-Store }
+            7 { Create-OU-Template }
+            8 { Create-AD-Groups }
+            9 { Create-AD-Users }
+            10 { Add-ADUsersToADGroups }
+            11 { Link-GPOWithOU }
+			12 { Export-AD-Users}
+			13 { Import-AD-Users }
+            14 { Exit }
+            default { 
+				Write-Log " Wrong Input."
+				Write-Host "Wrong Input. Please choose an option above." 
+			}
+        }
+
+    } while ($choice -ne {1..14})  
+    
+}
+
+### DNS Setup
+function DNS-Server-Setup {
+	Write-Log " Starting DNS Server Setup."
+    Clear-Host
+
+    try{
+        $DNSZones = (Get-DNSServerZone -ErrorAction SilentlyContinue).ZoneName
+    }
+    catch{
+        $DNSZones = $null
+    }
+
+    try{
+        $DomainName = (Get-ADDomain -ErrorAction SilentlyContinue).DNSRoot
+    }
+    catch{
+        $DomainName = $null
+    }
+
+    if([string]::IsNullOrEmpty($DNSZones)){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    <#$DNSzones -contains "0.in-addr.arpa" -and $DNSzones -contains "127.in-addr.arpa" -and $DNSzones -contains "255.in-addr.arpa"#>
+    elseif($DNSZones -contains $DomainName){
+		Write-Log " DNS Zone for your Domain already exists."
+        Write-Host " DNS Zone for your Domain already exists..."
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\1_ef-ad-dns-server-configuration_final.ps1"
+        }
+        catch{
+			Write-Log " ERROR: Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### First Domain-Controller Setup
+function Domain-Controller-Setup {
+	Write-Log " Starting Domain Controller Setup."
+    Clear-Host
+
+    try{
+        $DNSZones = (Get-DNSServerZone -ErrorAction SilentlyContinue).ZoneName
+    }
+    catch{
+        $DNSZones = $null
+    }
+
+    try{
+        $DomainName = (Get-ADDomain -ErrorAction SilentlyContinue).DNSRoot
+    }
+    catch{
+        $DomainName = $null
+    }
+
+    if([string]::IsNullOrEmpty($DNSZones)){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\2_ef-ad-setup_final.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Post Domain-Controller Setup Tasks
+function Post-Setup-Tasks {
+	Write-Log " Starting Domain Controller Post Setup Tasks."
+    Clear-Host
+
+    try{
+        $DNSZones = (Get-DNSServerZone -ErrorAction SilentlyContinue).ZoneName
+    }
+    catch{
+        $DNSZones = $null
+    }
+
+    try{
+        $DomainName = (Get-ADDomain -ErrorAction SilentlyContinue).DNSRoot
+    }
+    catch{
+        $DomainName = $null
+    }
+
+    if([string]::IsNullOrEmpty($DNSZones)){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\3_ef-ad-post-setup-tasks_final.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Add Server as DC
+function Add-DC {
+	Write-Log " Starting Adding Domain Controller."
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "MemberServer"){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\4_ef-ad-setup_add-dc_final.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Import EF Standard Group Policies
+function Import-GPO-Set {
+	Write-Log " Starting Importing Group Policies."
+    Clear-Host
+    
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\1_GroupPolicies\1_AddAndImport_EF-GPOSet.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Create Central Policy Store
+function Create-Central-Policy-Store {
+	Write-Log " Starting Creating Central Policy Store."
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\1_GroupPolicies\2_CreateCentralPolicyStore.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Create Standard OU Template
+function Create-OU-Template {
+	Write-Log " Starting Creating OU Template."
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\2_EF-OU-Template_Import\1_ef-ad-ou-std-creation_final.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Create Standard AD Groups
+function Create-AD-Groups {
+	Write-Log " Starting Creating AD Groups."
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\3_AD_EF-Gruppen_Import\1_ef-group-import_final.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Create Standard AD Users
+function Create-AD-Users {
+	Write-Log " Starting Creating AD Users."
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\4_AD_EF-User_Import\1_ef-user-import_final.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Add Standard AD Users to AD Groups
+function Add-ADUsersToADGroups {
+	Write-Log " Starting Adding AD Users to AD Groups."
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+		Write-Log " Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\5_AD_EF_AddUserToGroup\1_ef-ad-adduserstogroups_final.ps1"
+        }
+        catch{
+			Write-Log " Something went wrong!"
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Link Group Policies with OUs
+function Link-GPOWithOU {
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\6_AD_EF-OU-GPO-Link_Import\1_ef-ou-gpo-link-import_final.ps1"
+        }
+        catch{
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Export AD Users
+function Export-AD-Users {
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\ef_AD-bulk-user-export.ps1"
+        }
+        catch{
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+### Import AD Users
+function Import-AD-Users {
+    Clear-Host
+
+    try{
+        $LocalInfo = Get-ComputerInfo
+        $DomainRole = $LocalInfo.CsDomainRole
+    }
+    catch{
+        $LocalInfo = $null
+        $DomainRole = $null
+    }
+
+    if($DomainRole -ne "PrimaryDomainController" -and $DomainRole -ne "BackupDomainController"){
+        Write-Host -ForegroundColor Red "    Active-Directory Management can not be executed due to insufficient prerequisites!"
+        Read-Host " Press any key to abort"
+    }
+    else{
+        try{
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\ef_AD-bulk-user-import.ps1"
+        }
+        catch{
+            Write-Warning " Something went wrong!"
+        }
+        
+    }
+    Show-ADC-Menu
+}
+
+###
+### Hyper-V Menu
+###
+function Show-HyperV-Menu {
+	Write-Log " Showing Hyper-V Menu."
+    Clear-Host
+    Write-Host "`n-----------------------------------------------------------------------------------"
+    Write-Host "               Hyper-V Management"
+    Write-Host "-----------------------------------------------------------------------------------"
+
+    Write-Host "
+    Server Configuration
+    1) Global Virtual Hard Disks Storage Location
+    2) Global Virtual Computer Storage Location
+    3) Spanning NUMA
+    4) Live Migration
+    5) Storage Migration
+    6) Extended Session Mode
+    7) Replication Configuration (TBD)
+    8) Virtual Switch Configuration
+    9) Start/Stop Service
+    
+    Hyper-V and HCI Management
+    10) Display Hyper-V Status Information
+    11) Virtual Machine Management
+	
+    12) iWARP Configuration
+    13) Create S2D Cluster
+    14) S2D Cluster Storage Configuration (TBD)
+    
+    15) Leave Management
+
+-----------------------------------------------------------------------------------"
+
+    do {
+    
+        $choice = Read-Host " Choose an Option (1-15)"
+		Write-Log " User Input: $choice"
+        switch ($choice) {
+            1 { Manage-Global-VHD-Location }
+            2 { Manage-Global-VC-Location }
+            3 { Manage-Spanning-NUMA }
+            4 { Manage-Live-Migration }
+            5 { Manage-Storage-Migration }
+            6 { Manage-Extended-Session-Mode }
+            7 { Manage-Replication-Configuration }
+            8 { Manage-Virtual-Switch-Configuration }
+            9 { Manage-HyperV-Service }
+            10 { Display-HyperV-Status-Information }
+			11 { VirtualMachine-Management }
+			12 { Manage-iWARP }
+			13 { Create-S2DCluster }
+			14 { Manage-HCI-Storage }
+            15 { Exit }
+            default { 
+				Write-Log " Wrong Input."
+				Write-Host "Wrong Input. Please choose an option above." 
+			}
+        }
+
+    } while ($choice -ne {1..15})  
+    
+}
+
+function Create-S2DCluster {
+	Write-Log " Starting S2D Cluster creation."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\create_s2d-cluster.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+    Show-HyperV-Menu
+}
+
+function Manage-iWARP {
+	Write-Log " Starting iWARP Network Configuration."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_iwarp.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+    Show-HyperV-Menu
+}
+
+function Manage-HCI-Storage {
+	Write-Warning " Feature is not ready at the moment..."
+	<#
+	Write-Log " Starting Replication Configuration."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_replication.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	#>
+	Read-Host -Prompt " Press any key"
+	Show-HyperV-Menu
+}
+
+function Manage-Global-VHD-Location {
+	Write-Log " Starting Manage Global VHD Location."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_vhd-location.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+    Show-HyperV-Menu
+}
+
+function Manage-Global-VC-Location {
+	Write-Log " Starting Manage Global Virtual Computer Location."
+    Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_vc-location.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+    Show-HyperV-Menu
+}
+
+function Manage-Spanning-NUMA {
+	Write-Log " Starting Manage Spanning-NUMA."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_numa.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+function Manage-Live-Migration {
+	Write-Log " Starting Manage Live-Migration."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_live-migration.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+function Manage-Storage-Migration {
+	Write-Log " Starting Manage Storage-Migration."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_storage-migration.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+function Manage-Extended-Session-Mode {
+	Write-Log " Starting Manage Extended-Session-Mode."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_extended-session-mode.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+function Manage-Replication-Configuration {
+	Write-Warning " Please, do not use this feature!"
+	<#
+	Write-Log " Starting Replication Configuration."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_replication.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	#>
+	Read-Host -Prompt " Press any key"
+	Show-HyperV-Menu
+}
+
+function Manage-Virtual-Switch-Configuration {
+	Write-Log " Starting Manage Virtual-Switch Configuration."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_vmswitch.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+function Manage-HyperV-Service {
+	Write-Log " Starting Manage Hyper-V Service."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_hyperv-svc.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+function Display-HyperV-Status-Information {
+	Write-Log " Starting showing Hyper-V Status Information."
+	
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\display_hyperv-info.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+function VirtualMachine-Management {
+	Write-Log " Starting Virtual Machine Management."
+	Clear-Host
+	
+    try{
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_virtualmachines.ps1"
+    }
+    catch{
+		Write-Log " Something went wrong!"
+        Write-Warning " Something went wrong!"
+    }
+	Show-HyperV-Menu
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###
+### Server Role Specific Options
+###
+
+# Get Only Installed Windows Features on server
+$InstalledWinFeatures = Get-WindowsFeature | Where-Object { $_.Installed -eq $true }
+
+if($InstalledWinFeatures.Name -contains "AD-Domain-Services" -and $InstalledWinFeatures.Name -contains "DNS" -and $InstalledWinFeatures.Name -contains "GPMC"){    
+    Show-ADC-Menu
+}
+elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures.Name -contains "Hyper-V-Powershell"){
+	Show-HyperV-Menu
+}
+else {
+    # Nothing to display
+}
