@@ -10,10 +10,10 @@
     module, and configures autostart behavior at user logon.
 
     The script includes:
-      • Dynamic path handling based on the script’s execution location
-      • Step-by-step execution with progress feedback and colored console output
-      • Detailed timestamped logging stored locally in `C:\_it`
-      • Error handling and warnings for failed operations
+      - Dynamic path handling based on the script’s execution location
+      - Step-by-step execution with progress feedback and colored console output
+      - Detailed timestamped logging stored locally in `C:\_it`
+      - Error handling and warnings for failed operations
 
     This script is intended for **manual local deployment** on systems where the automated or
     remote installation (e.g., via WDS or MDT) is not available or desired. It should be executed
@@ -305,4 +305,5 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
