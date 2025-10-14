@@ -3,7 +3,7 @@
 ## Introduction
 Since we are using Windows Server Core Editions more and more frequently, you may notice that the onboard 'sconfig' that is onboard from microsoft, is a big pain in the ass. To make our own lives easier, I have created the so called 'PSC SConfig Menu' aka. 'psc_sconfig'.
 
-If you are deploying new Windows Servers 2025 in Core Edition, the 'psc_sconfig' will be installed automatically during the deployment and will automatically startup with you login.
+If you are deploying new Windows Servers 2025 in Core Edition, the 'psc_sconfig' will be installed automatically during the WDS deployment and will automatically startup with your login.
 
 <img width="1024" height="773" alt="image" src="https://github.com/user-attachments/assets/d1f706a1-7633-43e8-a1e5-32bb98667056" />
 
