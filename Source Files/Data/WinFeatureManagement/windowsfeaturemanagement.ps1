@@ -1,14 +1,56 @@
 <#
 .SYNOPSIS
-    
+    Role-aware Windows feature management menus for multiple windows server roles.
 .DESCRIPTION
-    
-.LINK
+    `windowsfeaturemanagement.ps1` provides interactive, role-specific management menus that
+    light up only when corresponding Windows features are installed:
 
+      • Active Directory Domain Services (with DNS & GPMC):
+          - DNS server setup
+          - First domain controller promotion
+          - Post-setup tasks
+          - Add additional domain controller
+          - Import EF standard GPO set
+          - Create Central Policy Store
+          - Create standard OU template
+          - Create standard AD groups and users
+          - Bulk add users to groups
+          - Export/Import AD users (CSV)
+
+      • Hyper-V (with Hyper-V PowerShell):
+          - Global default paths (VHD & VM)
+          - Spanning NUMA
+          - Live/Storage migration settings
+          - Extended Session Mode
+          - Virtual switch configuration
+          - Hyper-V service control and status dashboard
+          - VM management
+          - iWARP configuration
+          - S2D cluster creation (basic bootstrap)
+          - HCI storage workflows (placeholder)
+
+    The script performs feature detection via `Get-WindowsFeature` and then opens the
+    appropriate menu. Each menu item launches a dedicated helper script in a new, maximized
+    PowerShell window using `Start-Process -ExecutionPolicy Bypass`, while writing
+    timestamped entries to `C:\_it\psc_sconfig\Logfiles\psc_sconfig.log`.
+
+    Intended usage:
+      • Run locally on servers that already have AD DS/DNS/GPMC and/or Hyper-V installed.
+      • Execute with administrative privileges.
+      • Use as a companion to PSC_Sconfig to perform deeper role configuration tasks.
+	  
+.LINK
+	https://learn.microsoft.com/windows-server/identity/ad-ds/
+    https://learn.microsoft.com/windows-server/networking/dns/
+    https://learn.microsoft.com/windows-server/administration/windows-commands/gpupdate
+    https://learn.microsoft.com/windows-server/administration/windows-commands/dism
+    https://learn.microsoft.com/virtualization/hyper-v-on-windows/
+    https://learn.microsoft.com/windows-server/storage/storage-spaces/storage-spaces-direct-overview
+	https://github.com/PScherling
 
 .NOTES
           FileName: windowsfeaturemanagement.ps1
-          Solution: 
+          Solution: PSC_Sconfig – Role Management
           Author: Patrick Scherling
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
@@ -26,8 +68,25 @@
 				- HCI Management
 				- PKI Management
 
+.REQUIREMENTS
+    • Run as Administrator.
+    • Windows Server with relevant roles:
+        - AD DS + DNS + GPMC for ADC menu
+        - Hyper-V + Hyper-V PowerShell for Hyper-V menu
+    • PowerShell 5.1+ (or PowerShell 7.x on Windows).
+    • Helper scripts available at the expected paths under:
+        C:\_it\ADC_Setup\* and C:\_it\HyperV_Setup\*
+
+.OUTPUTS
+    Console output and log entries written to:
+        C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
+
 .Example
-    
+    PS C:\> .\windowsfeaturemanagement.ps1
+    Detects installed roles and opens the matching management menu (ADC or Hyper-V).
+
+	PS C:\> powershell.exe -ExecutionPolicy Bypass -File "C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1"
+    Runs the role management menus in a new PowerShell process with execution policy bypass.
 #>
 
 # Log file path
@@ -847,3 +906,4 @@ elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures
 else {
     # Nothing to display
 }
+
