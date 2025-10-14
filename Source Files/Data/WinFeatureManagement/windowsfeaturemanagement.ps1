@@ -5,7 +5,7 @@
     `windowsfeaturemanagement.ps1` provides interactive, role-specific management menus that
     light up only when corresponding Windows features are installed:
 
-      • Active Directory Domain Services (with DNS & GPMC):
+      - Active Directory Domain Services (with DNS & GPMC):
           - DNS server setup
           - First domain controller promotion
           - Post-setup tasks
@@ -17,7 +17,7 @@
           - Bulk add users to groups
           - Export/Import AD users (CSV)
 
-      • Hyper-V (with Hyper-V PowerShell):
+      - Hyper-V (with Hyper-V PowerShell):
           - Global default paths (VHD & VM)
           - Spanning NUMA
           - Live/Storage migration settings
@@ -35,9 +35,9 @@
     timestamped entries to `C:\_it\psc_sconfig\Logfiles\psc_sconfig.log`.
 
     Intended usage:
-      • Run locally on servers that already have AD DS/DNS/GPMC and/or Hyper-V installed.
-      • Execute with administrative privileges.
-      • Use as a companion to PSC_Sconfig to perform deeper role configuration tasks.
+      - Run locally on servers that already have AD DS/DNS/GPMC and/or Hyper-V installed.
+      - Execute with administrative privileges.
+      - Use as a companion to PSC_Sconfig to perform deeper role configuration tasks.
 	  
 .LINK
 	https://learn.microsoft.com/windows-server/identity/ad-ds/
@@ -50,7 +50,7 @@
 
 .NOTES
           FileName: windowsfeaturemanagement.ps1
-          Solution: PSC_Sconfig – Role Management
+          Solution: PSC_Sconfig - Role Management
           Author: Patrick Scherling
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
@@ -69,12 +69,12 @@
 				- PKI Management
 
 .REQUIREMENTS
-    • Run as Administrator.
-    • Windows Server with relevant roles:
+    - Run as Administrator.
+    - Windows Server with relevant roles:
         - AD DS + DNS + GPMC for ADC menu
         - Hyper-V + Hyper-V PowerShell for Hyper-V menu
-    • PowerShell 5.1+ (or PowerShell 7.x on Windows).
-    • Helper scripts available at the expected paths under:
+    - PowerShell 5.1+ (or PowerShell 7.x on Windows).
+    - Helper scripts available at the expected paths under:
         C:\_it\ADC_Setup\* and C:\_it\HyperV_Setup\*
 
 .OUTPUTS
@@ -906,4 +906,5 @@ elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures
 else {
     # Nothing to display
 }
+
 
