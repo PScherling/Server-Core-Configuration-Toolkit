@@ -8,41 +8,41 @@
     status) and provides guided actions to change common settings safely.
 
     Key capabilities:
-      • System overview: OS/Product/Build (incl. UBR), display version, uptime/last boot,
+      - System overview: OS/Product/Build (incl. UBR), display version, uptime/last boot,
         IP addresses, RAM and per-volume storage (auto GB/TB conversion).
-      • Connectivity & access:
+      - Connectivity & access:
           – Remote Management (WinRM) enable/disable
           – Remote Desktop enable/disable
           – Windows Defender Firewall profile status display
-      • Identity & time:
+      - Identity & time:
           – Hostname rename
           – Domain/Workgroup join/leave
           – Date/Time configuration
-      • Updates & telemetry:
+      - Updates & telemetry:
           – Read WSUS and AU policy (registry) and Windows Update service status
           – Windows Update workflows using the Windows Update Agent (WUA) APIs
           – Diagnostic data/telemetry (AllowTelemetry) view and configure
-      • Licensing:
+      - Licensing:
           – Windows activation status (WMI) and activation actions
-      • Local users & groups:
+      - Local users & groups:
           – Create user, add to Administrators, create local groups
-      • Actions:
+      - Actions:
           – Refresh dashboard, logoff, restart, shutdown, open terminal
-      • Role-aware add-ons (shown only when installed):
+      - Role-aware add-ons (shown only when installed):
           – Active Directory Domain Services (with DNS & GPMC): AD management menu
           – Hyper-V (with Hyper-V PowerShell): Hyper-V management menu
-      • Admin experience:
+      - Admin experience:
           – Clear, colorized console UI with progress messages
           – Robust error handling and warnings
           – Timestamped logging to: C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
           – Disables legacy SConfig autolaunch on start (best effort)
 
 	Notes:
-      • Run in an elevated PowerShell session for all features to work.
-      • Designed for Server Core, but works on full GUI installations as well.
-      • Windows Admin Center (WAC) detection:
+      - Run in an elevated PowerShell session for all features to work.
+      - Designed for Server Core, but works on full GUI installations as well.
+      - Windows Admin Center (WAC) detection:
           – Shows a caution when WAC is installed on a Domain Controller (per Microsoft guidance).
-      • Version displayed in the banner is kept in $VersionNumber.
+      - Version displayed in the banner is kept in $VersionNumber.
 	  
 .LINK
     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-date?view=powershell-7.4
@@ -114,9 +114,9 @@
 				- FILESRV Management
 
 .REQUIREMENTS
-    • Run as Administrator.
-    • PowerShell 5.1+ (Windows PowerShell) or PowerShell 7.x on Windows.
-    • Network and policy permissions appropriate for domain join, WinRM/RDP enablement,
+    - Run as Administrator.
+    - PowerShell 5.1+ (Windows PowerShell) or PowerShell 7.x on Windows.
+    - Network and policy permissions appropriate for domain join, WinRM/RDP enablement,
       Windows Update, and local user/group changes.
 
 .OUTPUTS
@@ -4801,4 +4801,5 @@ function Start-Terminal {
 #### Main Menu Selection
 ####
 Show-Menu
+
 
