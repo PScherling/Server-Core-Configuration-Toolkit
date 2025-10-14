@@ -108,9 +108,7 @@ Upload the zip file from 'Manual Installation' somewhere to your system, where y
 
 Run (as Admin):
 ```powershell
-Set-ExecutionPolicy Bypass
 powershell.exe -ExecutionPolicy Bypass -File .\manual_Install-PSC_Sconfig.ps1
-Set-ExecutionPolicy Default
 ```
 <img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/daf5d0d7-18df-472f-8cad-1f88c7b710e7" />
 <img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/3763c753-ec24-46b0-9ad9-a700d0ef6ab8" />
