@@ -1,6 +1,0 @@
-@echo off
-echo Modules are loading, please wait...
-timeout /t 5 /nobreak
-echo.
-echo Launching PSC Server Configuration Module...
-C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -WindowStyle maximized -ExecutionPolicy Bypass -Command "Import-Module psc_sconfig; psc_sconfig"
