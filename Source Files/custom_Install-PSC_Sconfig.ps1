@@ -1,13 +1,27 @@
 <#
 .SYNOPSIS
-
+	Installs and configures the custom PSC_Sconfig PowerShell module on a Windows system.
 .DESCRIPTION
-    
+    The `custom_Install-PSC_Sconfig.ps1` script automates the setup and configuration of the 
+    custom `psc_sconfig` module on a Windows machine. It performs the following actions:
+
+	1. Downloads all required files and directories from a specified network share.
+    2. Creates the necessary local directories for module installation.
+    3. Copies module and support files (such as `.psm1`, `.psd1`, and `.cmd` files) 
+       to their appropriate target locations.
+    4. Imports the module into PowerShell for immediate use.
+    5. Configures an autostart entry in the Windows Registry to launch `psc_sconfig` at user logon.
+    6. Logs all operations (success, warnings, and errors) both locally and remotely 
+       to ensure full traceability.
+
+    The script includes error handling, detailed timestamped logging, and progress indicators
+    for each installation step. It can be executed remotely or locally, making it ideal 
+    for deployment automation scenarios such as WDS or MDT post-install tasks.
 .LINK
-    
+    https://github.com/PatrickScherling
 .NOTES
           FileName: custom_Install-PSC_Sconfig.ps1
-          Solution: 
+          Solution: PSC_Sconfig Deployment
           Author: Patrick Scherling
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
@@ -23,6 +37,11 @@
 		  
 		
 .Example
+	PS C:\> .\custom_Install-PSC_Sconfig.ps1
+	Runs the installation and configuration process for the PSC_Sconfig module on the local machine.
+
+	PS C:\> powershell.exe -ExecutionPolicy Bypass -File "\\192.168.121.66\DeploymentShare$\Scripts\custom\psc_sconfig\custom_Install-PSC_Sconfig.ps1"
+    Executes the script from a network share, bypassing local execution policy restrictions.
 #>
 function Start-Configuration {
     # Variables
@@ -274,5 +293,6 @@ function Start-Configuration {
 		Reason: $_"
 	}#>
 }
+
 
 Start-Configuration
