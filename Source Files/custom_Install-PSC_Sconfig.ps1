@@ -46,7 +46,7 @@
 function Start-Configuration {
     # Variables
 	# Set your WDS Credentials and Server Information here
-    $user = "wds.usr"
+    $user = "wdsuser"
     $pass = "Password"
 	$FileSrv = "0.0.0.0" # MDT Server IP-Address
 	
@@ -297,5 +297,6 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
 
