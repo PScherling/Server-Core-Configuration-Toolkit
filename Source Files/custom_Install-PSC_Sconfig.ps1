@@ -45,9 +45,10 @@
 #>
 function Start-Configuration {
     # Variables
+	# Set your WDS Credentials and Server Information here
     $user = "wds.usr"
-    $pass = "YjVloU2hdKZEyN6em5Zu"
-	$FileSrv = "192.168.121.66"
+    $pass = "Password"
+	$FileSrv = "0.0.0.0" # MDT Server IP-Address
 	
     $dest = "C:\_it\psc_sconfig"
     $source = "\\$($FileSrv)\DeploymentShare$\Scripts\custom\psc_sconfig\Data"
@@ -296,3 +297,4 @@ function Start-Configuration {
 
 
 Start-Configuration
+
