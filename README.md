@@ -1,6 +1,6 @@
 # README - Advanced SConfig
 
-Introduction
+## Introduction
 Since we are using Windows Server Core Editions more and more frequently, you may notice that the onboard 'sconfig' that is onboard from microsoft, is a big pain in the ass. To make our own lives easier, I have created the so called 'PSC SConfig Menu' aka. 'psc_sconfig'.
 
 If you are deploying new Windows Servers 2025 in Core Edition, the 'psc_sconfig' will be installed automatically during the deployment and will automatically startup with you login.
@@ -50,7 +50,7 @@ psc_sconfig
 start psc_sconfig
  
 
-If you need to post-install 'psc_sconfig' by yourself
+## If you need to post-install 'psc_sconfig' by yourself
 In case you have or want to install the 'psc_scofnig' on your system after your manual installation of a Windows Server Core Edition you can do that with the 'Manual Installation' package.
 
  
