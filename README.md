@@ -1,4 +1,5 @@
 # PSC SConfig – Server Core Configuration Toolkit
+<img width="1024" height="773" alt="image" src="https://github.com/user-attachments/assets/f03f4833-197e-4765-85d5-405d0fab73be" />
 
 **PSC SConfig** is a menu‑driven PowerShell toolkit for configuring and administering Windows (especially **Server Core**) systems after deployment. It ships with a friendly console UI, robust logging, and role‑aware menus that light up for **Active Directory Domain Services** and **Hyper‑V** when those roles are installed.
 
@@ -103,11 +104,23 @@ powershell.exe -ExecutionPolicy Bypass -File .\custom_Install-PSC_Sconfig.ps1
 
 ### B) Manual (Local) – `manual_Install-PSC_Sconfig.ps1`
 Installs from local `.\Data` without any server dependency.
+Upload the zip file from 'Manual Installation' somewhere to your system, where you want to install it like to "D:\TEMP" and extract it.
 
 Run (as Admin):
 ```powershell
+Set-ExecutionPolicy Bypass
 powershell.exe -ExecutionPolicy Bypass -File .\manual_Install-PSC_Sconfig.ps1
+Set-ExecutionPolicy Default
 ```
+<img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/daf5d0d7-18df-472f-8cad-1f88c7b710e7" />
+<img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/3763c753-ec24-46b0-9ad9-a700d0ef6ab8" />
+<img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/5eb1fd3a-a397-49fd-a7e1-0ebc1139b4c4" />
+<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/b25fcece-4664-4866-b211-59b8d9b617e5" />
+<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/11f053b5-8feb-4876-b81c-51eff140802a" />
+<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/944e8ad9-8549-4f98-a67c-950cf4550386" />
+<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/9f99a1c2-38e0-4b36-970e-5df8610ed2c1" />
+
+
 
 ---
 
@@ -197,12 +210,6 @@ A: Update `$VersionNumber` inside `psc_sconfig.ps1`.
 ## 🤝 Contributing
 
 Issues and PRs welcome. Please avoid including real server names, IPs, or credentials in examples.
-
----
-
-## 📜 License
-
-Add your preferred license (e.g., MIT).
 
 ---
 
