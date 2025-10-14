@@ -1,151 +1,219 @@
-# README - PSC SConfig
+# PSC SConfig – Server Core Configuration Toolkit
 
-## Introduction
-Since we are using Windows Server Core Editions more and more frequently, you may notice that the onboard 'sconfig' that is onboard from microsoft, is a big pain in the ass. To make our own lives easier, I have created the so called 'PSC SConfig Menu' aka. 'psc_sconfig'.
+**PSC SConfig** is a menu‑driven PowerShell toolkit for configuring and administering Windows (especially **Server Core**) systems after deployment. It ships with a friendly console UI, robust logging, and role‑aware menus that light up for **Active Directory Domain Services** and **Hyper‑V** when those roles are installed.
 
-If you are deploying new Windows Servers 2025 in Core Edition, the 'psc_sconfig' will be installed automatically during the WDS deployment and will automatically startup with your login.
+This repo includes:
+- The interactive tool (`psc_sconfig.ps1`)
+- A lightweight module launcher (`psc_sconfig.psm1`) so you can just type `psc_sconfig`
+- Manual and automated installers
+- Optional role management menus (ADC/Hyper‑V) via `windowsfeaturemanagement.ps1`
 
-<img width="1024" height="773" alt="image" src="https://github.com/user-attachments/assets/d1f706a1-7633-43e8-a1e5-32bb98667056" />
+---
 
- 
+## ✨ What PSC SConfig does
 
-As you can see in the screenshot above, you get all relevant information of the server that you initially need.
+### System overview (read‑only dashboard)
+- OS/product/build (incl. UBR) and display version
+- Uptime & last boot
+- IP addresses and network prefix info
+- RAM (total/used/free) and **per‑volume** storage with **GB/TB** auto‑conversion
+- Windows Defender Firewall profile status
+- Windows Admin Center (WAC) / Azure Arc presence
+- Windows Update policies & service status (WSUS/AU options)
+- Diagnostic data (AllowTelemetry)
+- Activation status
 
-Further down you get the possibility to configure the server. You can make all standard configurations that you initially need to do, to get your server running as you want.
+### One‑key configuration actions
+- Hostname / Domain or Workgroup join/leave
+- Remote Management (WinRM) enable/disable
+- Remote Desktop enable/disable
+- Windows Update configuration + WUA‑based update workflows
+- Date/Time configuration
+- Diagnostic data level
+- Windows activation
+- Local users & groups: add user, add admin, create group
+- Actions: Refresh, Logoff, Restart, Shutdown, open terminal
 
-<img width="1020" height="541" alt="image" src="https://github.com/user-attachments/assets/ce1ac050-b842-4057-aa8a-ace9ffd2baf4" />
+### Role‑aware add‑ons (auto‑detected)
+- **Active Directory Domain Services (AD DS)** + DNS + GPMC → **ADC menu**  
+  - DNS server setup  
+  - First domain controller promotion  
+  - Post‑setup tasks  
+  - Add additional domain controller  
+  - Import “standard” GPO set & create central policy store  
+  - Create OU template, standard groups/users, bulk group assignment  
+  - **Export/Import AD users (CSV)**  
+- **Hyper‑V** (+ Hyper‑V PowerShell) → **Hyper‑V menu**  
+  - Global paths (VHD/VM)  
+  - NUMA spanning, Live/Storage migration, Extended Session Mode  
+  - Virtual switch management, service control, status dashboard  
+  - VM management  
+  - iWARP config, S2D cluster creation (bootstrap)  
 
- 
+### Admin experience
+- Colorized menu UI with clear prompts
+- Detailed **timestamped logging**
+- Disables legacy **SConfig autolaunch** (best effort) on start
 
-And whats even better, if you deploy e.g. a Domain-Controller or a Hyper-V via our Deployment System, you can do all initial configuration steps to get those Server Roles running too.
+---
 
-<img width="1024" height="768" alt="image" src="https://github.com/user-attachments/assets/4d4e8847-57f5-48c5-99d3-d58d1b9dcf78" />
+## 📦 Repository Contents
 
-<img width="1024" height="768" alt="image" src="https://github.com/user-attachments/assets/14f9b821-910e-4db6-a624-c64e76f067eb" />
+| Path / Script | Purpose |
+|---|---|
+| `psc_sconfig.ps1` | The main interactive Server Core configuration tool. |
+| `psc_sconfig.psm1` | Module launcher: runs the tool in a new, maximized PowerShell window. |
+| `manual_Install-PSC_Sconfig.ps1` | **Manual/local** installer (uses local `.\Data` payload). |
+| `custom_Install-PSC_Sconfig.ps1` | **Automated (MDT/WDS)** installer from a deployment share. |
+| `WinFeatureManagement\windowsfeaturemanagement.ps1` | Role‑aware management menus for **AD DS** and **Hyper‑V**. |
+| `Data\` | Copy payload for installers (module files, cmd/launchers, assets). |
+| `Logfiles\` | Runtime log location (created under `C:\_it\psc_sconfig\Logfiles`). |
 
- 
+> The console header shows the current `$VersionNumber` defined in `psc_sconfig.ps1`.
 
- 
+---
 
-How to run 'psc_sconfig'
-From the normal CLI or PowerShell you can use the following commands to start the "psc_sconfig' menu.
+## 🧱 Requirements
 
-Command Line Interface:
+- Windows Server (Core recommended) or Windows with admin rights
+- Run PowerShell as **Administrator**
+- **PowerShell 5.1+** (or PowerShell 7.x on Windows)
+- For role menus: install the corresponding roles first (AD DS + DNS + GPMC, or Hyper‑V + Hyper‑V PowerShell)
+- Local write access for logs and reports
 
+---
 
+## 🔧 Installation
 
+### A) Automated (MDT/WDS) – `custom_Install-PSC_Sconfig.ps1`
+Pulls the payload from your deployment share and installs module + launchers.
+
+- Copies **`\\<FileSrv>\DeploymentShare$\Scripts\custom\psc_sconfig\Data`** → `C:\_it\psc_sconfig`
+- Creates module path: `C:\Program Files\WindowsPowerShell\Modules\psc_sconfig`
+- Copies `psc_sconfig.psm1/.psd1` into the module path
+- Copies `psc_sconfig.cmd` into `C:\Windows\System32`
+- Imports the module
+- Sets autostart (optional) and logs to a share
+- Log upload to: `\\<FileSrv>\Logs$\Custom\Configuration`
+
+Run (as Admin) in your task sequence:
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\custom_Install-PSC_Sconfig.ps1
+```
+
+### B) Manual (Local) – `manual_Install-PSC_Sconfig.ps1`
+Installs from local `.\Data` without any server dependency.
+
+Run (as Admin):
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\manual_Install-PSC_Sconfig.ps1
+```
+
+---
+
+## ⚙️ Configuration & Paths
+
+- **Module**: `C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\`  
+- **Launcher**: `C:\Windows\System32\psc_sconfig.cmd`  
+- **Main tool**: `C:\_it\psc_sconfig\psc_sconfig.ps1`  
+- **Logs**: `C:\_it\psc_sconfig\Logfiles\psc_sconfig.log`  
+- **Installer logs** (pattern): `C:\_it\Configure_psc_sconfig_<COMPUTER>_<YYYY-MM-DD_HH-mm-ss>.log`  
+- **Desktop/Autostart** (optional): `launch_psc_sconfig.bat`
+
+> Update the installer variables (`$FileSrv`, log share paths, etc.) for your environment.
+
+---
+
+## 🚀 Usage
+
+### Start via Module (recommended)
+```powershell
+Import-Module psc_sconfig
 psc_sconfig
+```
 
+### Start via Command
+```powershell
+psc_sconfig.cmd
+```
+or run the script directly:
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File "C:\_it\psc_sconfig\psc_sconfig.ps1"
+```
 
-start psc_sconfig
- 
+You’ll see the PSC SConfig main menu. Use the numbered options to configure networking, join a domain, manage updates, users, and more. If AD DS / Hyper‑V roles are present, the corresponding **role menus** appear automatically.
 
-PowerShell:
+---
 
+## 📝 Logging
 
+- The main tool appends to:  
+  `C:\_it\psc_sconfig\Logfiles\psc_sconfig.log`
+- Installers write **timestamped** logs (and the automated installer can upload them to your central log share).
 
-psc_sconfig
+---
 
+## 🔐 Security Notes
 
-start psc_sconfig
- 
+- Run only on trusted admin servers.
+- Limit access to deployment and log shares.
+- If you extend the tool to push configs remotely, apply least‑privilege and auditing.
 
-## If you need to post-install 'psc_sconfig' by yourself
-In case you have or want to install the 'psc_scofnig' on your system after your manual installation of a Windows Server Core Edition you can do that with the 'Manual Installation' package.
+---
 
- 
+## 🛠️ Troubleshooting
 
-To get the 'psc_sconfig' on your system, just do these simple steps:
+- **Role menus don’t appear** → Confirm role prerequisites:  
+  - AD DS menu requires **AD‑Domain‑Services**, **DNS**, and **GPMC**  
+  - Hyper‑V menu requires **Hyper‑V** and **Hyper‑V‑PowerShell**
+- **WUA / update info missing** → Ensure Windows Update service and WSUS policy keys are readable.
+- **Firewall/WAC/Arc status missing** → Verify cmdlets/registry paths and permissions.
+- **SConfig still auto‑launches** → The tool attempts to disable SConfig autolaunch; verify with `Get-SConfig` / `Set-SConfig` based on your environment.
 
-Upload this zip file somewhere to your system, where you want to install it like to "D:\TEMP" and extract it.
+---
 
-Extract the zip file
+## ❓ FAQ
 
-Review the extracted contents. There should be a directory called 'Data' and a PowerShell Script for installation.
+**Q: Can I use PSC SConfig on a full GUI server?**  
+A: Yes. It’s optimized for Server Core but works on full installations as well.
 
-Logon to your server and enter the cli
+**Q: Does it require PSWindowsUpdate?**  
+A: No. It uses built‑in APIs/registry + WUA for update flows.
 
-In the new cli window:
+**Q: Where do I change the version shown in the banner?**  
+A: Update `$VersionNumber` inside `psc_sconfig.ps1`.
 
-Review your systems execution policy by running the command 'Get-ExecutionPolicy'
+---
 
+## 🧭 Roadmap / Ideas
 
+- Optional policy baselines export/import
+- NIC teaming/RDMA wizards (expanded)
+- Richer Hyper‑V & AD workflows
+- Theming for the console header + report outputs
 
+---
 
-Get-ExecutionPolicy
- 
+## 🤝 Contributing
 
-If the Policy is set to restricted, run this command 'Set-ExecutionPolicy Bypass'
+Issues and PRs welcome. Please avoid including real server names, IPs, or credentials in examples.
 
+---
 
+## 📜 License
 
+Add your preferred license (e.g., MIT).
 
-Set-ExecutionPolicy Bypass
- 
+---
 
-If you don't change the policy to bypass, you are not allowed to execute the install script.
+## 🔗 References
 
+- Windows Admin Center: https://learn.microsoft.com/windows-server/manage/windows-admin-center/  
+- Windows Update (WUA) API: https://learn.microsoft.com/windows/win32/wua_sdk/  
+- Hyper‑V docs: https://learn.microsoft.com/virtualization/hyper-v-on-windows/  
+- AD DS docs: https://learn.microsoft.com/windows-server/identity/ad-ds/  
+- BitLocker & security hardening (general): https://learn.microsoft.com/windows/security/
 
-Verify that the ExecutionPolicy is set to 'Bypass'
+---
 
-
-
-
-Get-ExecutionPolicy
-Navigate into the directory where you have extracted the files (e.g. 'D:\Temp')
-
-
-
-
-cd d:\temp
-Run the install script by executing this command: '.\manual_Install-psc_Sconfig.ps1'
-
-
-
-
-.\manual_Install-PSC_Sconfig.ps1
- 
-
-Let the installer do it's thing
-
-
-After the installation has finished, you should see a message 'Configuration completed successfully.'
-
-Press any key to exit the script
-
-Run the command 'Set-ExecutionPolicy Default'
-
-
-
-
-Set-ExecutionPolicy Default
-Get-ExecutionPolicy
- 
-
-Review that the policy is not set to bypass anymore
-
-Now you can run the psc_sconfig menu  start psc_sconfig winking face
-
-
-
-
-start psc_sconfig
- 
-
-<img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/47c7ae29-3b9d-4a39-a45f-87e6240f9c82" />
-
-<img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/424283a3-32dc-4d78-944d-5c381da7d066" />
-
-<img width="1024" height="510" alt="image" src="https://github.com/user-attachments/assets/efc5a613-7bcf-44f4-8e10-e2fdf2de612d" />
-
-<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/e71d9698-493c-403b-9d34-69633d6559d5" />
-
-<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/cbd25e97-35aa-44e3-b8e2-828bd9208eed" />
-
-<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/7b0f8463-99fb-4933-86b2-7f674fca02b2" />
-
-<img width="977" height="510" alt="image" src="https://github.com/user-attachments/assets/4aabd667-fee6-416c-bcf3-08ad0a80b816" />
-
-<img width="1024" height="773" alt="image" src="https://github.com/user-attachments/assets/ccbf8099-8127-4e8a-bf70-f2a64343d2ee" />
-
- 
+**Author:** Patrick Scherling (@Patrick Scherling)
