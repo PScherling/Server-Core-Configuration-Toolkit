@@ -1,4 +1,4 @@
-# README - Advanced SConfig
+# README - PSC SConfig
 
 ## Introduction
 Since we are using Windows Server Core Editions more and more frequently, you may notice that the onboard 'sconfig' that is onboard from microsoft, is a big pain in the ass. To make our own lives easier, I have created the so called 'PSC SConfig Menu' aka. 'psc_sconfig'.
