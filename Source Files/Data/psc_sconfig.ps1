@@ -1,8 +1,49 @@
 <#
 .SYNOPSIS
-    
+    Interactive Server Core configuration and management tool for Windows.
 .DESCRIPTION
-    
+    `psc_sconfig.ps1` is an interactive, menu-driven PowerShell tool for configuring and
+    administering Windows (especially Server Core) systems after deployment. It gathers key
+    system facts (OS/build, uptime, RAM, storage, IPs, firewall, WAC/Arc/Update/Activation
+    status) and provides guided actions to change common settings safely.
+
+    Key capabilities:
+      • System overview: OS/Product/Build (incl. UBR), display version, uptime/last boot,
+        IP addresses, RAM and per-volume storage (auto GB/TB conversion).
+      • Connectivity & access:
+          – Remote Management (WinRM) enable/disable
+          – Remote Desktop enable/disable
+          – Windows Defender Firewall profile status display
+      • Identity & time:
+          – Hostname rename
+          – Domain/Workgroup join/leave
+          – Date/Time configuration
+      • Updates & telemetry:
+          – Read WSUS and AU policy (registry) and Windows Update service status
+          – Windows Update workflows using the Windows Update Agent (WUA) APIs
+          – Diagnostic data/telemetry (AllowTelemetry) view and configure
+      • Licensing:
+          – Windows activation status (WMI) and activation actions
+      • Local users & groups:
+          – Create user, add to Administrators, create local groups
+      • Actions:
+          – Refresh dashboard, logoff, restart, shutdown, open terminal
+      • Role-aware add-ons (shown only when installed):
+          – Active Directory Domain Services (with DNS & GPMC): AD management menu
+          – Hyper-V (with Hyper-V PowerShell): Hyper-V management menu
+      • Admin experience:
+          – Clear, colorized console UI with progress messages
+          – Robust error handling and warnings
+          – Timestamped logging to: C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
+          – Disables legacy SConfig autolaunch on start (best effort)
+
+	Notes:
+      • Run in an elevated PowerShell session for all features to work.
+      • Designed for Server Core, but works on full GUI installations as well.
+      • Windows Admin Center (WAC) detection:
+          – Shows a caution when WAC is installed on a Domain Controller (per Microsoft guidance).
+      • Version displayed in the banner is kept in $VersionNumber.
+	  
 .LINK
     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-date?view=powershell-7.4
     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-date?view=powershell-7.4#notes
@@ -23,10 +64,11 @@
 	https://learn.microsoft.com/en-us/powershell/module/netlbfo/remove-netlbfoteam?view=windowsserver2022-ps
 	Windows Admin Center local scripts
 	https://learn.microsoft.com/en-us/windows/win32/wua_sdk/windows-update-agent--wua--api-reference
+	https://github.com/PScherling
 
 .NOTES
           FileName: psc_sconfig.ps1
-          Solution: 
+          Solution: PSC_Sconfig
           Author: Patrick Scherling
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
@@ -71,8 +113,25 @@
 				- PRINTSRV Management
 				- FILESRV Management
 
+.REQUIREMENTS
+    • Run as Administrator.
+    • PowerShell 5.1+ (Windows PowerShell) or PowerShell 7.x on Windows.
+    • Network and policy permissions appropriate for domain join, WinRM/RDP enablement,
+      Windows Update, and local user/group changes.
+
+.OUTPUTS
+    Console output (colorized) and log file at:
+        C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
+
 .Example
-    start psc_sconfig
+	PS C:\> psc_sconfig
+    (When the module is installed) Starts PSC SConfig via the module launcher.
+	
+    PS C:\> powershell.exe -ExecutionPolicy Bypass -File "C:\_it\psc_sconfig\psc_sconfig.ps1"
+    Launches PSC SConfig with full interactive menu and logging.
+
+	PS C:\> Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Maximized -File C:\_it\psc_sconfig\psc_sconfig.ps1'
+    Opens PSC SConfig in a new, maximized PowerShell window.
 #>
 
 # Version number
@@ -4742,3 +4801,4 @@ function Start-Terminal {
 #### Main Menu Selection
 ####
 Show-Menu
+
