@@ -18,7 +18,7 @@
     for each installation step. It can be executed remotely or locally, making it ideal 
     for deployment automation scenarios such as WDS or MDT post-install tasks.
 .LINK
-    https://github.com/PatrickScherling
+    https://github.com/PScherling
 .NOTES
           FileName: custom_Install-PSC_Sconfig.ps1
           Solution: PSC_Sconfig Deployment
@@ -297,4 +297,5 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
