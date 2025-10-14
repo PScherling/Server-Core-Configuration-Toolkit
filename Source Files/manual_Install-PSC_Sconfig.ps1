@@ -19,7 +19,7 @@
     remote installation (e.g., via WDS or MDT) is not available or desired. It should be executed
     with administrative privileges to ensure full functionality.
 .LINK
-    https://github.com/PatrickScherling
+    https://github.com/PScherling
 .NOTES
           FileName: manual_Install-PSC_Sconfig.ps1
           Solution: PSC_Sconfig Local Deployment
@@ -305,3 +305,4 @@ function Start-Configuration {
 
 
 Start-Configuration
+
