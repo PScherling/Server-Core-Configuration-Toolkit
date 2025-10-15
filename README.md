@@ -198,9 +198,8 @@ A: Update `$VersionNumber` inside `psc_sconfig.ps1`.
 
 ## 🧭 Roadmap / Ideas
 
-- Optional policy baselines export/import
-- NIC teaming/RDMA wizards (expanded)
-- Richer Hyper‑V & AD workflows
+- Richer Hyper-V workflows for S2D and Shared Storage configurations
+- File Server, Print Server, WSUS etc. workflows
 - Theming for the console header + report outputs
 
 ---
