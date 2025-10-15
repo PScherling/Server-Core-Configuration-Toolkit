@@ -64,12 +64,12 @@ This repo includes:
 |---|---|
 | `Data\` | Copy payload for installers (module files, cmd/launchers, assets). |
 | `Logfiles\` | Runtime log location (created under `C:\_it\psc_sconfig\Logfiles`). |
-| `launch_psc_sconfig.bat` | For starting and auto-launching the module. |
-| `psc_sconfig.cmd` | For starting the main powershell script. |
-| `psc_sconfig.ps1` | The main interactive Server Core configuration tool. |
-| `psc_sconfig.psm1` | Module launcher: runs the tool in a new, maximized PowerShell window. |
 | `manual_Install-PSC_Sconfig.ps1` | **Manual/local** installer (uses local `.\Data` payload). |
 | `custom_Install-PSC_Sconfig.ps1` | **Automated (MDT/WDS)** installer from a deployment share. |
+| `Data\launch_psc_sconfig.bat` | For starting and auto-launching the module. |
+| `Data\psc_sconfig.cmd` | For starting the main powershell script. |
+| `Data\psc_sconfig.ps1` | The main interactive Server Core configuration tool. |
+| `Data\psc_sconfig.psm1` | Module launcher: runs the tool in a new, maximized PowerShell window. |
 | `Data\WinFeatureManagement\windowsfeaturemanagement.ps1` | Role‑aware management menus for **AD DS** and **Hyper‑V**. |
 
 > The console header shows the current `$VersionNumber` defined in `psc_sconfig.ps1`.
