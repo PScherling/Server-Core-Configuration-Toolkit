@@ -62,6 +62,8 @@ This repo includes:
 
 | Path / Script | Purpose |
 |---|---|
+| `launch_psc_sconfig.bat` | For starting and auto-launching the module. |
+| `psc_sconfig.cmd` | For starting the main powershell script. |
 | `psc_sconfig.ps1` | The main interactive Server Core configuration tool. |
 | `psc_sconfig.psm1` | Module launcher: runs the tool in a new, maximized PowerShell window. |
 | `manual_Install-PSC_Sconfig.ps1` | **Manual/local** installer (uses local `.\Data` payload). |
