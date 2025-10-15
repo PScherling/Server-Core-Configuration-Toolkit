@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
 	Manually installs and configures the PSC_Sconfig PowerShell module on a local Windows system.
+	
 .DESCRIPTION
     The `manual_Install-PSC_Sconfig.ps1` script performs a local, manual installation of the
     `psc_sconfig` PowerShell module without requiring access to a deployment or file server.
@@ -18,8 +19,10 @@
     This script is intended for **manual local deployment** on systems where the automated or
     remote installation (e.g., via WDS or MDT) is not available or desired. It should be executed
     with administrative privileges to ensure full functionality.
+	
 .LINK
     https://github.com/PScherling
+	
 .NOTES
           FileName: manual_Install-PSC_Sconfig.ps1
           Solution: PSC_Sconfig Local Deployment
@@ -305,5 +308,6 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
 
