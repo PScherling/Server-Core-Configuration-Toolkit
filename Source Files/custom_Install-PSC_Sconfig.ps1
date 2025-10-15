@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
 	Installs and configures the custom PSC_Sconfig PowerShell module on a Windows system.
+	
 .DESCRIPTION
     The `custom_Install-PSC_Sconfig.ps1` script automates the setup and configuration of the 
     custom `psc_sconfig` module on a Windows machine. It performs the following actions:
@@ -17,8 +18,10 @@
     The script includes error handling, detailed timestamped logging, and progress indicators
     for each installation step. It can be executed remotely or locally, making it ideal 
     for deployment automation scenarios such as WDS or MDT post-install tasks.
+	
 .LINK
     https://github.com/PScherling
+	
 .NOTES
           FileName: custom_Install-PSC_Sconfig.ps1
           Solution: PSC_Sconfig Deployment
@@ -297,6 +300,7 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
 
 
