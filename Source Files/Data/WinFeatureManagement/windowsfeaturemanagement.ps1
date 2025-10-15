@@ -38,6 +38,15 @@
       - Run locally on servers that already have AD DS/DNS/GPMC and/or Hyper-V installed.
       - Execute with administrative privileges.
       - Use as a companion to PSC_Sconfig to perform deeper role configuration tasks.
+
+	Requirements:
+      - Run as Administrator.
+      - Windows Server with relevant roles:
+          - AD DS + DNS + GPMC for ADC menu
+          - Hyper-V + Hyper-V PowerShell for Hyper-V menu
+      - PowerShell 5.1+ (or PowerShell 7.x on Windows).
+      - Helper scripts available at the expected paths under:
+          C:\_it\ADC_Setup\* and C:\_it\HyperV_Setup\*
 	  
 .LINK
 	https://learn.microsoft.com/windows-server/identity/ad-ds/
@@ -68,14 +77,6 @@
 				- HCI Management
 				- PKI Management
 
-.REQUIREMENTS
-    - Run as Administrator.
-    - Windows Server with relevant roles:
-        - AD DS + DNS + GPMC for ADC menu
-        - Hyper-V + Hyper-V PowerShell for Hyper-V menu
-    - PowerShell 5.1+ (or PowerShell 7.x on Windows).
-    - Helper scripts available at the expected paths under:
-        C:\_it\ADC_Setup\* and C:\_it\HyperV_Setup\*
 
 .OUTPUTS
     Console output and log entries written to:
@@ -906,5 +907,6 @@ elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures
 else {
     # Nothing to display
 }
+
 
 
