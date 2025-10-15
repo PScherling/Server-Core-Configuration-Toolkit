@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
     Interactive Server Core configuration and management tool for Windows.
+	
 .DESCRIPTION
     `psc_sconfig.ps1` is an interactive, menu-driven PowerShell tool for configuring and
     administering Windows (especially Server Core) systems after deployment. It gathers key
@@ -43,6 +44,12 @@
       - Windows Admin Center (WAC) detection:
           – Shows a caution when WAC is installed on a Domain Controller (per Microsoft guidance).
       - Version displayed in the banner is kept in $VersionNumber.
+
+	Requirements:
+      - Run as Administrator.
+      - PowerShell 5.1+ (Windows PowerShell) or PowerShell 7.x on Windows.
+      - Network and policy permissions appropriate for domain join, WinRM/RDP enablement,
+        Windows Update, and local user/group changes.
 	  
 .LINK
     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-date?view=powershell-7.4
@@ -113,11 +120,6 @@
 				- PRINTSRV Management
 				- FILESRV Management
 
-.REQUIREMENTS
-    - Run as Administrator.
-    - PowerShell 5.1+ (Windows PowerShell) or PowerShell 7.x on Windows.
-    - Network and policy permissions appropriate for domain join, WinRM/RDP enablement,
-      Windows Update, and local user/group changes.
 
 .OUTPUTS
     Console output (colorized) and log file at:
@@ -4801,5 +4803,6 @@ function Start-Terminal {
 #### Main Menu Selection
 ####
 Show-Menu
+
 
 
