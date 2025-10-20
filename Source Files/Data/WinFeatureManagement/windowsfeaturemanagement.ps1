@@ -38,15 +38,6 @@
       - Run locally on servers that already have AD DS/DNS/GPMC and/or Hyper-V installed.
       - Execute with administrative privileges.
       - Use as a companion to PSC_Sconfig to perform deeper role configuration tasks.
-
-	Requirements:
-      - Run as Administrator.
-      - Windows Server with relevant roles:
-          - AD DS + DNS + GPMC for ADC menu
-          - Hyper-V + Hyper-V PowerShell for Hyper-V menu
-      - PowerShell 5.1+ (or PowerShell 7.x on Windows).
-      - Helper scripts available at the expected paths under:
-          C:\_it\ADC_Setup\* and C:\_it\HyperV_Setup\*
 	  
 .LINK
 	https://learn.microsoft.com/windows-server/identity/ad-ds/
@@ -77,6 +68,14 @@
 				- HCI Management
 				- PKI Management
 
+.REQUIREMENTS
+    - Run as Administrator.
+    - Windows Server with relevant roles:
+        - AD DS + DNS + GPMC for ADC menu
+        - Hyper-V + Hyper-V PowerShell for Hyper-V menu
+    - PowerShell 5.1+ (or PowerShell 7.x on Windows).
+    - Helper scripts available at the expected paths under:
+        C:\_it\ADC_Setup\* and C:\_it\HyperV_Setup\*
 
 .OUTPUTS
     Console output and log entries written to:
@@ -202,7 +201,7 @@ function DNS-Server-Setup {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\1_ef-ad-dns-server-configuration_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\1_ad-dns-server-configuration_final.ps1"
         }
         catch{
 			Write-Log " ERROR: Something went wrong!"
@@ -239,7 +238,7 @@ function Domain-Controller-Setup {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\2_ef-ad-setup_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\2_ad-setup_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -276,7 +275,7 @@ function Post-Setup-Tasks {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\3_ef-ad-post-setup-tasks_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\3_ad-post-setup-tasks_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -308,7 +307,7 @@ function Add-DC {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\4_ef-ad-setup_add-dc_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\4_ad-setup_add-dc_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -340,7 +339,7 @@ function Import-GPO-Set {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\1_GroupPolicies\1_AddAndImport_EF-GPOSet.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\1_GroupPolicies\1_AddAndImport_GPOSet.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -404,7 +403,7 @@ function Create-OU-Template {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\2_EF-OU-Template_Import\1_ef-ad-ou-std-creation_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\2_OU-Template_Import\1_ad-ou-std-creation_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -436,7 +435,7 @@ function Create-AD-Groups {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\3_AD_EF-Gruppen_Import\1_ef-group-import_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\3_AD_Gruppen_Import\1_group-import_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -468,7 +467,7 @@ function Create-AD-Users {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\4_AD_EF-User_Import\1_ef-user-import_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\4_AD_User_Import\1_user-import_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -500,7 +499,7 @@ function Add-ADUsersToADGroups {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\5_AD_EF_AddUserToGroup\1_ef-ad-adduserstogroups_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\5_AD_AddUserToGroup\1_ad-adduserstogroups_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -530,7 +529,7 @@ function Link-GPOWithOU {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\6_AD_EF-OU-GPO-Link_Import\1_ef-ou-gpo-link-import_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\6_AD_OU-GPO-Link_Import\1_ou-gpo-link-import_final.ps1"
         }
         catch{
             Write-Warning " Something went wrong!"
@@ -559,7 +558,7 @@ function Export-AD-Users {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\ef_AD-bulk-user-export.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\AD-bulk-user-export.ps1"
         }
         catch{
             Write-Warning " Something went wrong!"
@@ -588,7 +587,7 @@ function Import-AD-Users {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\ef_AD-bulk-user-import.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\AD-bulk-user-import.ps1"
         }
         catch{
             Write-Warning " Something went wrong!"
@@ -907,6 +906,3 @@ elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures
 else {
     # Nothing to display
 }
-
-
-
