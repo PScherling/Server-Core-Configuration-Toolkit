@@ -16,7 +16,7 @@ This repo includes:
 ### System overview (read‑only dashboard)
 - OS/product/build (incl. UBR) and display version
 - Uptime & last boot
-- IP addresses and network prefix info
+- IP addresses info
 - RAM (total/used/free) and **per‑volume** storage with **GB/TB** auto‑conversion
 - Windows Defender Firewall profile status
 - Windows Admin Center (WAC) / Azure Arc presence
@@ -26,6 +26,7 @@ This repo includes:
 
 ### One‑key configuration actions
 - Hostname / Domain or Workgroup join/leave
+- Network Interface configuration
 - Remote Management (WinRM) enable/disable
 - Remote Desktop enable/disable
 - Windows Update configuration + WUA‑based update workflows
