@@ -435,7 +435,7 @@ function Create-AD-Groups {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\3_AD_Gruppen_Import\1_group-import_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\3_AD_Groups_Import\1_group-import_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -906,4 +906,5 @@ elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures
 else {
     # Nothing to display
 }
+
 
