@@ -36,7 +36,7 @@ This repo includes:
 | **0.1.1** | TBD | Hot Fix | Minor Bug Fixes in UI presentation during user and group creation |  | UI bug during user and group creation | Windows-Update Error Handling |
 | **0.1.2** | 03/Jun/2025 | Hot Fix | Minor Bug Fix in function 'WindowsUpdates'; Error HAndling implemented |  | Function 'WindowsUpdates' Error Handling | Bug in function 'Install-WUpdates'; Refresh action should be removed; Bug in function 'WindowsUpdates' - Status in list of pending updates must be adapted; Pending reboot information should be displayed |
 | **0.1.3** | 05/Jun/2025 | Hot Fix | Various Bug Fixes |  | Bug in function 'Install-WUpdates'; Bug in function 'WindowsUpdates' |  |
-| **0.1.4** | 16/Sep/2025 | Minor Release |  | AD MGMT: AD User Export/Import; OS Build version including minor build number e.g.: '10.0.26100.**4061**'; Displaying information if 'WAC' is installed on domain-controller - https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/plan/installation-options |  |  |
+| **0.1.4** | 16/Sep/2025 | Minor Release |  | OS Build version including minor build number e.g.: '10.0.26100.**4061**'; Displaying information if 'WAC' is installed on domain-controller - https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/plan/installation-options |  |  |
 
 ---
 
