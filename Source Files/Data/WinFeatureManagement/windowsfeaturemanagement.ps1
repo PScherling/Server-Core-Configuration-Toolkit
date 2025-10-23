@@ -318,7 +318,7 @@ function Add-DC {
     Show-ADC-Menu
 }
 
-### Import EF Standard Group Policies
+### Import Standard Group Policies
 function Import-GPO-Set {
 	Write-Log " Starting Importing Group Policies."
     Clear-Host
@@ -906,3 +906,4 @@ elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures
 else {
     # Nothing to display
 }
+
