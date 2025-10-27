@@ -1,7 +1,6 @@
 <#
 .SYNOPSIS
     Interactive Server Core configuration and management tool for Windows.
-	
 .DESCRIPTION
     `psc_sconfig.ps1` is an interactive, menu-driven PowerShell tool for configuring and
     administering Windows (especially Server Core) systems after deployment. It gathers key
@@ -44,12 +43,6 @@
       - Windows Admin Center (WAC) detection:
           – Shows a caution when WAC is installed on a Domain Controller (per Microsoft guidance).
       - Version displayed in the banner is kept in $VersionNumber.
-
-	Requirements:
-      - Run as Administrator.
-      - PowerShell 5.1+ (Windows PowerShell) or PowerShell 7.x on Windows.
-      - Network and policy permissions appropriate for domain join, WinRM/RDP enablement,
-        Windows Update, and local user/group changes.
 	  
 .LINK
     https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.utility/get-date?view=powershell-7.4
@@ -80,7 +73,7 @@
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
           Created: 2024-11-01
-          Modified: 2025-07-18
+          Modified: 2025-10-27
 
           Version - 0.0.1 - () - Initial first attempt.
           Version - 0.0.2 - () - Finalized first functional Version
@@ -111,6 +104,7 @@
 							   - Changing Build Version to display the update revision number too; previous "10.0.26100"; now "10.0.26100.4061"
 							   - Display Security Risk Info Message on Domain-Controller if WAC is installed.
                                - Changing "seletc"'s to "select-object"'s and fixing other PowerShell syntax issues #unapproved verb!
+          Version - 0.1.5 - () - Changing "LastBoot" format from dd.mmm.yyyy to dd/mmm/yyyy 
 
           TODO:
 			Coming Features
@@ -120,6 +114,11 @@
 				- PRINTSRV Management
 				- FILESRV Management
 
+.REQUIREMENTS
+    - Run as Administrator.
+    - PowerShell 5.1+ (Windows PowerShell) or PowerShell 7.x on Windows.
+    - Network and policy permissions appropriate for domain join, WinRM/RDP enablement,
+      Windows Update, and local user/group changes.
 
 .OUTPUTS
     Console output (colorized) and log file at:
@@ -137,7 +136,7 @@
 #>
 
 # Version number
-$VersionNumber = "0.1.4"
+$VersionNumber = "0.1.5"
 
 # Log file path
 $logFile = "C:\_it\psc_sconfig\Logfiles\psc_sconfig.log"
@@ -385,6 +384,7 @@ function Show-Menu {
     # Uptime Info
     $LastBootUpTime = Get-CimInstance -ClassName Win32_OperatingSystem | Select-object LastBootUpTime
     $LastBoot = $LastBootUpTime.LastBootUpTime.ToString("dddd dd/MMM/yyyy HH:mm:ss")
+    $LastBoot = $LastBoot.Replace('.','/')
     $Uptime = (Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime
     $Uptime = $Uptime.Days.ToString() + " Days " + $Uptime.Hours.ToString() + " Hours " + $Uptime.Minutes.ToString() + " Minutes"
 
@@ -4803,6 +4803,3 @@ function Start-Terminal {
 #### Main Menu Selection
 ####
 Show-Menu
-
-
-
