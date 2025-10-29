@@ -45,7 +45,7 @@ This repo includes:
 - Local users & groups: add user, add admin, create group
 - Actions: Refresh, Logoff, Restart, Shutdown, open terminal
 
-### Role‑aware add‑ons (auto‑detected)
+### 🧩 Role‑aware add‑ons (auto‑detected)
 - **Active Directory Domain Services (AD DS)** + DNS + GPMC → **ADC menu**  
   - DNS server setup  
   - First domain controller promotion  
