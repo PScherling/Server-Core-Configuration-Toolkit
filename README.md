@@ -12,6 +12,14 @@ This repo includes:
 
 ---
 
+## 🧭 Coming Features / Ideas
+
+- Richer Hyper-V workflows for S2D and Shared Storage configurations
+- File Server, Print Server, WSUS etc. workflows
+- Simplify theming for the console header + report outputs
+
+---
+
 ## ✨ What PSC SConfig does
 
 ### System overview (read‑only dashboard)
@@ -197,20 +205,6 @@ A: No. It uses built‑in APIs/registry + WUA for update flows.
 
 **Q: Where do I change the version shown in the banner?**  
 A: Update `$VersionNumber` inside `psc_sconfig.ps1`.
-
----
-
-## 🧭 Roadmap / Ideas
-
-- Richer Hyper-V workflows for S2D and Shared Storage configurations
-- File Server, Print Server, WSUS etc. workflows
-- Theming for the console header + report outputs
-
----
-
-## 🤝 Contributing
-
-Issues and PRs welcome. Please avoid including real server names, IPs, or credentials in examples.
 
 ---
 
