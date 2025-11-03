@@ -17,6 +17,7 @@ This repo includes:
 - Richer Hyper-V workflows for S2D and Shared Storage configurations
 - File Server, Print Server, WSUS etc. workflows
 - Simplify theming for the console header + report outputs
+- HPE Service Pack for ProLiant (SPP) Automated Installation
 
 ---
 
