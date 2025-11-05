@@ -32,6 +32,6 @@ Version 0.1.6
 | **0.1.3** | 05/Jun/2025 | Hot Fix | Various Bug Fixes |  | Bug in function 'Install-WUpdates'; Bug in function 'WindowsUpdates' |  |
 | **0.1.4** | 16/Sep/2025 | Minor Release |  | OS Build version including minor build number e.g.: '10.0.26100.**4061**'; Displaying information if 'WAC' is installed on domain-controller - https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/plan/installation-options |  |  |
 | **0.1.5** | 27/Oct/2025 | Minor Release |  | Changing "LastBoot" format from dd.mmm.yyyy to dd/mmm/yyyy |  |  |
-| **0.1.6** | 05/Nov/2025 | Minor Release |  | Displaying Manucafurer and Model Information (Info is needed for HPE SPP Update functionality anyway) |  |  |
+| **0.1.6** | 05/Nov/2025 | Minor Release |  | Displaying Manucafurer and Model Information (Info is needed for HPE SPP Update functionality anyway); Implementation of HPE SPP Update Functionality |  |  |
 
 
