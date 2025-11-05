@@ -11,37 +11,37 @@
       - System overview: OS/Product/Build (incl. UBR), display version, uptime/last boot,
         IP addresses, RAM and per-volume storage (auto GB/TB conversion).
       - Connectivity & access:
-          – Remote Management (WinRM) enable/disable
-          – Remote Desktop enable/disable
-          – Windows Defender Firewall profile status display
+          - Remote Management (WinRM) enable/disable
+          - Remote Desktop enable/disable
+          - Windows Defender Firewall profile status display
       - Identity & time:
-          – Hostname rename
-          – Domain/Workgroup join/leave
-          – Date/Time configuration
+          - Hostname rename
+          - Domain/Workgroup join/leave
+          - Date/Time configuration
       - Updates & telemetry:
-          – Read WSUS and AU policy (registry) and Windows Update service status
-          – Windows Update workflows using the Windows Update Agent (WUA) APIs
-          – Diagnostic data/telemetry (AllowTelemetry) view and configure
+          - Read WSUS and AU policy (registry) and Windows Update service status
+          - Windows Update workflows using the Windows Update Agent (WUA) APIs
+          - Diagnostic data/telemetry (AllowTelemetry) view and configure
       - Licensing:
-          – Windows activation status (WMI) and activation actions
+          - Windows activation status (WMI) and activation actions
       - Local users & groups:
-          – Create user, add to Administrators, create local groups
+          - Create user, add to Administrators, create local groups
       - Actions:
-          – Refresh dashboard, logoff, restart, shutdown, open terminal
+          - Refresh dashboard, logoff, restart, shutdown, open terminal
       - Role-aware add-ons (shown only when installed):
-          – Active Directory Domain Services (with DNS & GPMC): AD management menu
-          – Hyper-V (with Hyper-V PowerShell): Hyper-V management menu
+          - Active Directory Domain Services (with DNS & GPMC): AD management menu
+          - Hyper-V (with Hyper-V PowerShell): Hyper-V management menu
       - Admin experience:
-          – Clear, colorized console UI with progress messages
-          – Robust error handling and warnings
-          – Timestamped logging to: C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
-          – Disables legacy SConfig autolaunch on start (best effort)
+          - Clear, colorized console UI with progress messages
+          - Robust error handling and warnings
+          - Timestamped logging to: C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
+          - Disables legacy SConfig autolaunch on start (best effort)
 
 	Notes:
       - Run in an elevated PowerShell session for all features to work.
       - Designed for Server Core, but works on full GUI installations as well.
       - Windows Admin Center (WAC) detection:
-          – Shows a caution when WAC is installed on a Domain Controller (per Microsoft guidance).
+          - Shows a caution when WAC is installed on a Domain Controller (per Microsoft guidance).
       - Version displayed in the banner is kept in $VersionNumber.
 	  
 .LINK
@@ -73,7 +73,7 @@
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
           Created: 2024-11-01
-          Modified: 2025-10-27
+          Modified: 2025-11-5
 
           Version - 0.0.1 - () - Initial first attempt.
           Version - 0.0.2 - () - Finalized first functional Version
@@ -105,6 +105,7 @@
 							   - Display Security Risk Info Message on Domain-Controller if WAC is installed.
                                - Changing "seletc"'s to "select-object"'s and fixing other PowerShell syntax issues #unapproved verb!
           Version - 0.1.5 - () - Changing "LastBoot" format from dd.mmm.yyyy to dd/mmm/yyyy 
+          Version - 0.1.6 - () - Displaying Manucafurer and Model Information (Info is needed for HPE SPP Update functionality anyway)
 
           TODO:
 			Coming Features
@@ -136,7 +137,7 @@
 #>
 
 # Version number
-$VersionNumber = "0.1.5"
+$VersionNumber = "0.1.6"
 
 # Log file path
 $logFile = "C:\_it\psc_sconfig\Logfiles\psc_sconfig.log"
@@ -458,8 +459,11 @@ function Show-Menu {
         $azurearcstatus = "Installed and running"
     }
 
-
-
+    # Manufacturer and Model Info
+    $manufacturerInfo = Get-CimInstance -ClassName Win32_ComputerSystem | select-object Manufacturer,Model
+    $manufacturer = $manufacturerInfo.Manufacturer
+    $model = $manufacturerInfo.Model
+    
 
     
     ###
@@ -509,6 +513,9 @@ function Show-Menu {
     + OS                       $WindowsProduct
     + Version                  $OSDisplayVersion
     + Build                    $OSVersion
+
+    + Manufacturer             $manufacturer
+    + Model                    $model
 
     + System Running Since     $LastBoot
     + Total Uptime             $Uptime
@@ -589,7 +596,38 @@ function Show-Menu {
         Write-Host -ForegroundColor Yellow "    19) Hyper-V Management"
         $WinFeatureUnlocked = "true"
     }
+    elseif($InstalledWinFeatures.Name -contains "AD-Domain-Services" -and $InstalledWinFeatures.Name -contains "DNS" -and $InstalledWinFeatures.Name -contains "GPMC") {
+        Write-Host -ForegroundColor Yellow "    19) Active-Directory Management"
+        if($manufacturer -eq "HPE"){
+            Write-Host -ForegroundColor Yellow "    20) Install HPE SPP via ISO"
+        }
+        $WinFeatureUnlocked = "true"
+		
+		Write-Host "-----------------------------------------------------------------------------------"
+		if($WACStatus -eq "Installed"){
+			Write-Host -ForegroundColor Yellow "    Windows Admin Center on a Domain-Controller is not supported!
+    https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/plan/installation-options"
+			Write-Host -ForegroundColor Cyan "
+    To start the PSC sconfig, use the command 'psc_sconfig'"
+		}
+		elseif($WACStatus -eq "Not Installed"){
+			Write-Host -ForegroundColor Cyan "
+    To start the PSC sconfig, use the command 'psc_sconfig'"
+		}
+		Write-Host "-----------------------------------------------------------------------------------"
+    }
+    elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures.Name -contains "Hyper-V-Powershell"){
+        Write-Host -ForegroundColor Yellow "    19) Hyper-V Management"
+        if($manufacturer -eq "HPE"){
+            Write-Host -ForegroundColor Yellow "    20) Install HPE SPP via ISO"
+        }
+        $WinFeatureUnlocked = "true"
+    }
     else {
+        if($manufacturer -eq "HPE"){
+            Write-Host -ForegroundColor Yellow "    19) Install HPE SPP via ISO"
+        }
+
         # Nothing to display
         $WinFeatureUnlocked = "false"
 		
@@ -612,7 +650,7 @@ function Show-Menu {
     
 	
 
-    if($WinFeatureUnlocked -eq "true"){
+    if($WinFeatureUnlocked -eq "true" -and $manufacturer -ne "HPE"){
         do {
             $choice = Read-Host " Choose an Option (1-19)"
 			Write-Log " User Input: $choice"
@@ -635,7 +673,99 @@ function Show-Menu {
                 16 { Restart-System }
                 17 { Start-Shutdown-System }
                 18 { Start-Terminal }
-                19 { Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1" }
+                19 { Start-Process powershell.exe -ArgumentList @(
+                        '-ExecutionPolicy', 'Bypass',
+                        '-WindowStyle', 'Maximized',
+                        '-File', 'C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
+                    ) 
+                }
+                default { 
+					Write-Log " Wrong Input."
+					Write-Host "Wrong Input. Please choose an option above." 
+				}
+            }
+
+        } while ($choice -ne {1..19})
+    }
+    elseif($WinFeatureUnlocked -eq "true" -and $manufacturer -eq "HPE") {
+        do {
+            $choice = Read-Host " Choose an Option (1-20)"
+			Write-Log " User Input: $choice"
+            switch ($choice) {
+                1 { Set-Hostname }
+                2 { Open-Network-Configuration }
+                3 { Open-Domain-Configuration }
+                4 { Open-RemoteMGMT-Configuration }
+                5 { Open-RDP-Configuration }
+                6 { Open-WindowsUpdate-Configuration }
+                7 { Open-DateTime-Configuration }
+                8 { Open-DiagnosticData-Configuration }
+                9 { Set-Windows-Activation }
+                10 { Add-LocalUser }
+                11 { Add-LocalAdministrator }
+                12 { Add-LocalGroup }
+				13 { Show-Menu }
+                14 { WindowsUpdates }
+                15 { Start-Log-Off }
+                16 { Restart-System }
+                17 { Start-Shutdown-System }
+                18 { Start-Terminal }
+                #19 { Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1" }
+                19 { Start-Process powershell.exe -ArgumentList @(
+                        '-ExecutionPolicy', 'Bypass',
+                        '-WindowStyle', 'Maximized',
+                        '-File', 'C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
+                    ) 
+                }
+                20 { Start-Process powershell.exe -ArgumentList @(
+                        '-ExecutionPolicy', 'Bypass',
+                        '-WindowStyle', 'Maximized',
+                        '-File', 'C:\_it\HPE\custom_Install_HPE-SPP.ps1',
+                        '-Update',
+                        '-UseISO',
+                        '-Mode', 'Manual'
+                    )
+                }
+                default { 
+					Write-Log " Wrong Input."
+					Write-Host "Wrong Input. Please choose an option above." 
+				}
+            }
+
+        } while ($choice -ne {1..20})
+    }
+    elseif($WinFeatureUnlocked -ne "true" -and $manufacturer -eq "HPE") {
+        do {
+            $choice = Read-Host " Choose an Option (1-19)"
+			Write-Log " User Input: $choice"
+            switch ($choice) {
+                1 { Set-Hostname }
+                2 { Open-Network-Configuration }
+                3 { Open-Domain-Configuration }
+                4 { Open-RemoteMGMT-Configuration }
+                5 { Open-RDP-Configuration }
+                6 { Open-WindowsUpdate-Configuration }
+                7 { Open-DateTime-Configuration }
+                8 { Open-DiagnosticData-Configuration }
+                9 { Set-Windows-Activation }
+                10 { Add-LocalUser }
+                11 { Add-LocalAdministrator }
+                12 { Add-LocalGroup }
+				13 { Show-Menu }
+                14 { WindowsUpdates }
+                15 { Start-Log-Off }
+                16 { Restart-System }
+                17 { Start-Shutdown-System }
+                18 { Start-Terminal }
+                19 { Start-Process powershell.exe -ArgumentList @(
+                        '-ExecutionPolicy', 'Bypass',
+                        '-WindowStyle', 'Maximized',
+                        '-File', 'C:\_it\HPE\custom_Install_HPE-SPP.ps1',
+                        '-Update',
+                        '-UseISO',
+                        '-Mode', 'Manual'
+                    )
+                }
                 default { 
 					Write-Log " Wrong Input."
 					Write-Host "Wrong Input. Please choose an option above." 
