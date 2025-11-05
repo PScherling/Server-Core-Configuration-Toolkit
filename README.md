@@ -1,6 +1,6 @@
 # PSC SConfig – Server Core Configuration Toolkit
-<img width="1024" height="773" alt="image" src="https://github.com/user-attachments/assets/f03f4833-197e-4765-85d5-405d0fab73be" />
-<img width="1023" height="600" alt="image" src="https://github.com/user-attachments/assets/6fa0e415-d10b-4335-bb90-80161088a63e" />
+<img width="1579" height="875" alt="image" src="https://github.com/user-attachments/assets/0ce18da9-a479-44c9-9d8a-66eea30702e8" />
+<img width="1579" height="564" alt="image" src="https://github.com/user-attachments/assets/5008246f-c581-4573-8c79-429b9239cc88" />
 
 **PSC SConfig** is a menu‑driven PowerShell toolkit for configuring and administering Windows (especially **Server Core**) systems after deployment. It ships with a friendly console UI, robust logging, and role‑aware menus that light up for **Active Directory Domain Services** and **Hyper‑V** when those roles are installed and more are about to be included.
 
