@@ -7,7 +7,7 @@
 This repo includes:
 - The interactive tool (`psc_sconfig.ps1`)
 - A lightweight module launcher (`psc_sconfig.psm1`) so you can just type `psc_sconfig`
-- Manual and automated installers
+- Manual and automated installers (works with MDT)
 - Optional role management menus (ADC/Hyper‑V) via `windowsfeaturemanagement.ps1`
 
 ---
