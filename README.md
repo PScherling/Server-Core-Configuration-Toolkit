@@ -17,7 +17,6 @@ This repo includes:
 - Richer Hyper-V workflows for S2D and Shared Storage configurations
 - File Server, Print Server, WSUS etc. workflows
 - Simplify theming for the console header + report outputs
-- HPE Service Pack for ProLiant (SPP) Automated Installation
 
 ---
 
@@ -33,6 +32,7 @@ This repo includes:
 - Windows Update policies & service status (WSUS/AU options)
 - Diagnostic data (AllowTelemetry)
 - Activation status
+- Manufacturer and Model Information
 
 ### One‑key configuration actions
 - Hostname / Domain or Workgroup join/leave
@@ -60,7 +60,11 @@ This repo includes:
   - NUMA spanning, Live/Storage migration, Extended Session Mode  
   - Virtual switch management, service control, status dashboard  
   - VM management  
-  - iWARP config, S2D cluster creation (bootstrap)  
+  - iWARP config, S2D cluster creation (bootstrap)
+ 
+### 🧩 HPE‑aware add‑ons (auto‑detected)
+- **HPE DL Server** (HPE SPP) Update option
+  - Run interactively (iLO authentication required) for a manual install using a mounted ISO
 
 ### Admin experience
 - Colorized menu UI with clear prompts
