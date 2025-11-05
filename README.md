@@ -71,6 +71,8 @@ Folder Structure:
 - **HPE DL Server** (HPE SPP) Update option
   - Run interactively (iLO authentication required) for a manual install using a mounted ISO
 
+
+
 ### Admin experience
 - Colorized menu UI with clear prompts
 - Detailed **timestamped logging**
