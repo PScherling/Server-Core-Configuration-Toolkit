@@ -63,6 +63,11 @@ This repo includes:
   - iWARP config, S2D cluster creation (bootstrap)
  
 ### 🧩 HPE‑aware add‑ons (auto‑detected)
+https://github.com/PScherling/WDS-HPE_SPP_DriverExtract is required.
+
+Folder Structure:
+`C:\_it\HPE\script.ps1`
+
 - **HPE DL Server** (HPE SPP) Update option
   - Run interactively (iLO authentication required) for a manual install using a mounted ISO
 
