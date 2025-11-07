@@ -105,6 +105,7 @@ Folder Structure:
 - **PowerShell 5.1+** (or PowerShell 7.x on Windows)
 - For role menus: install the corresponding roles first (AD DS + DNS + GPMC, or Hyper‑V + Hyper‑V PowerShell)
 - Local write access for logs and reports
+- For HPE SPP Update: install the corresponding script on your HP Server (https://github.com/PScherling/HPE-SPP-Installation-Toolkit)
 
 ---
 
