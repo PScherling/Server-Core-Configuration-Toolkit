@@ -205,18 +205,6 @@ You’ll see the PSC SConfig main menu. Use the numbered options to configure ne
 - **Firewall/WAC/Arc status missing** → Verify cmdlets/registry paths and permissions.
 - **SConfig still auto‑launches** → The tool attempts to disable SConfig autolaunch; verify with `Get-SConfig` / `Set-SConfig` based on your environment.
 
----
-
-## ❓ FAQ
-
-**Q: Can I use PSC SConfig on a full GUI server?**  
-A: Yes. It’s optimized for Server Core but works on full installations as well.
-
-**Q: Does it require PSWindowsUpdate?**  
-A: No. It uses built‑in APIs/registry + WUA for update flows.
-
-**Q: Where do I change the version shown in the banner?**  
-A: Update `$VersionNumber` inside `psc_sconfig.ps1`.
 
 ---
 
