@@ -48,6 +48,7 @@ This repo includes:
 
 ### 🧩 Role‑aware add‑ons (auto‑detected)
 - **Active Directory Domain Services (AD DS)** + DNS + GPMC → **ADC menu**  
+https://github.com/PScherling/ADC-Setup is required.
   - DNS server setup  
   - First domain controller promotion  
   - Post‑setup tasks  
@@ -56,6 +57,7 @@ This repo includes:
   - Create OU template, standard groups/users, bulk group assignment  
   - **Export/Import AD users (CSV)**  
 - **Hyper‑V** (+ Hyper‑V PowerShell) → **Hyper‑V menu**  
+https://github.com/PScherling/Hyper-V-Setup is required.
   - Global paths (VHD/VM)  
   - NUMA spanning, Live/Storage migration, Extended Session Mode  
   - Virtual switch management, service control, status dashboard  
