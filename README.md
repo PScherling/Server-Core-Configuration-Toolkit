@@ -48,7 +48,7 @@ This repo includes:
 
 ### 🧩 Role‑aware add‑ons (auto‑detected)
 - **Active Directory Domain Services (AD DS)** + DNS + GPMC → **ADC menu**  
-https://github.com/PScherling/ADC-Setup is required.
+https://github.com/PScherling/Active-Directory-and-DNS-Intial-Configuration-Toolkit is required.
   - DNS server setup  
   - First domain controller promotion  
   - Post‑setup tasks  
