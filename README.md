@@ -12,6 +12,12 @@ This repo includes:
 
 ---
 
+## Spnsonsorship
+
+If you like my work, please support me:  https://github.com/sponsors/PScherling
+
+---
+
 ## 🧭 Coming Features / Ideas
 
 - Richer Hyper-V workflows for S2D and Shared Storage configurations
