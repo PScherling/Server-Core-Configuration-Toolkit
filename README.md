@@ -57,7 +57,7 @@ https://github.com/PScherling/Active-Directory-and-DNS-Intial-Configuration-Tool
   - Create OU template, standard groups/users, bulk group assignment  
   - **Export/Import AD users (CSV)**  
 - **Hyper‑V** (+ Hyper‑V PowerShell) → **Hyper‑V menu**  
-https://github.com/PScherling/Hyper-V-Setup is required.
+https://github.com/PScherling/Hyper-V-Server-Management-Toolkit is required.
   - Global paths (VHD/VM)  
   - NUMA spanning, Live/Storage migration, Extended Session Mode  
   - Virtual switch management, service control, status dashboard  
