@@ -12,7 +12,7 @@ This repo includes:
 
 ---
 
-## Spnsonsorship
+## Sponsorship
 
 If you like my work, please support me:  https://github.com/sponsors/PScherling
 
