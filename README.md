@@ -23,6 +23,7 @@ If you like my work, please support me:  https://github.com/sponsors/PScherling
 - Richer Hyper-V workflows for S2D and Shared Storage configurations
 - File Server, Print Server, WSUS etc. workflows
 - Simplify theming for the console header + report outputs
+- PSC-SConfig Module update function
 
 ---
 
