@@ -4,7 +4,7 @@ cls
 set PowerShell=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe
 REM set SConfigV2Command=Invoke-Sconfig
 REM Change this to the actual path of your script
-set PSCsconfig=C:\_it\psc_sconfig\psc_sconfig.ps1
+set PSCsconfig=C:\_psc\psc_sconfig\psc_sconfig.ps1
 
 pushd %~dp0
 if exist %PowerShell% (
@@ -15,3 +15,4 @@ if exist %PowerShell% (
     REM To run SConfig, please install Windows PowerShell feature
 )
 popd
+
