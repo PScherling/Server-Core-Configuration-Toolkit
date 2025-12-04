@@ -53,7 +53,7 @@ function Start-Configuration {
     $pass = "Password"
 	$FileSrv = "0.0.0.0" # MDT Server IP-Address
 	
-    $dest = "C:\_it\psc_sconfig"
+    $dest = "C:\_psc\psc_sconfig"
     $source = "\\$($FileSrv)\DeploymentShare$\Scripts\custom\psc_sconfig\Data"
 	# Get all files and subdirectories from the source folder, including hidden/system files
 	$items = Get-ChildItem -Path $source -Recurse
@@ -66,7 +66,7 @@ function Start-Configuration {
     $step6 = "false"
     
     # Log file path
-    #$logFile = "C:\_it\psc_sconfig_install.log"
+    #$logFile = "C:\_psc\psc_sconfig_install.log"
 	
 	# Log file path and function to log messages
 	$config = "psc_sconfig"
@@ -77,7 +77,7 @@ function Start-Configuration {
 	$logFilePath = "\\$($FileSrv)\Logs$\Custom\Configuration"
 	$logFile = "$($logFilePath)\$($logFileName)"
 
-	$localLogFilePath = "C:\_it"
+	$localLogFilePath = "C:\_psc"
 	$localLogFile = "$($localLogFilePath)\$($logFileName)"
 	
 	# Function to log messages with timestamps
@@ -103,7 +103,7 @@ function Start-Configuration {
                 # Create Directory
                 try {
                     Write-Log "Creating target directory: $dest"
-                    New-Item -Path "C:\_it\" -Name "psc_sconfig" -ItemType "directory"
+                    New-Item -Path "C:\_psc\" -Name "psc_sconfig" -ItemType "directory"
                 } catch {
                     Write-Log "Error: Directory can not be created: $_"
                     break
@@ -183,7 +183,7 @@ function Start-Configuration {
             if (-Not (Test-Path "C:\Windows\System32\psc_sconfig.cmd")) {
                 try {
                     Write-Log "Copying psc_sconfig.cmd to System32"
-                    copy-item "C:\_it\psc_sconfig\psc_sconfig.cmd" -Destination "C:\Windows\System32\"
+                    copy-item "C:\_psc\psc_sconfig\psc_sconfig.cmd" -Destination "C:\Windows\System32\"
                     for ($i = 0; $i -le 100; $i = $i + 10) {
                         Write-Progress -Activity "File copy in Progress" -Status "File Copy Progress $i% Complete:" -PercentComplete $i
                         Start-Sleep -Milliseconds 250
@@ -201,7 +201,7 @@ function Start-Configuration {
             if (-Not (Test-Path "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\psc_sconfig.psm1")) {
                 try {
                     Write-Log "Copying psc_sconfig.psm1 to PowerShell Modules"
-                    copy-item "C:\_it\psc_sconfig\psc_sconfig.psm1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
+                    copy-item "C:\_psc\psc_sconfig\psc_sconfig.psm1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
                 } catch {
                     Write-Log "Error: File copy failed for psc_sconfig.psm1: $_"
                     break
@@ -211,7 +211,7 @@ function Start-Configuration {
             if (-Not (Test-Path "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\psc_sconfig.psd1")) {
                 try {
                     Write-Log "Copying psc_sconfig.psd1 to PowerShell Modules"
-                    copy-item "C:\_it\psc_sconfig\psc_sconfig.psd1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
+                    copy-item "C:\_psc\psc_sconfig\psc_sconfig.psd1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
                 } catch {
                     Write-Log "Error: File copy failed for psc_sconfig.psd1: $_"
                     break
@@ -241,7 +241,7 @@ function Start-Configuration {
         if ($step4 -eq "true") {
             try {
                 Write-Log "Setting psc_sconfig to autostart at logon"
-                new-itemproperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name psc_sconfig -Value 'C:\_it\psc_sconfig\launch_psc_sconfig.bat'
+                new-itemproperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name psc_sconfig -Value 'C:\_psc\psc_sconfig\launch_psc_sconfig.bat'
             } catch {
                 Write-Log "Error: Failed to set autolaunch for psc_sconfig: $_"
                 break
@@ -300,6 +300,7 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
 
 
