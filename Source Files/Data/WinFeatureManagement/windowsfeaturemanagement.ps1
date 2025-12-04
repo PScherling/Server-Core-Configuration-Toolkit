@@ -32,7 +32,7 @@
     The script performs feature detection via `Get-WindowsFeature` and then opens the
     appropriate menu. Each menu item launches a dedicated helper script in a new, maximized
     PowerShell window using `Start-Process -ExecutionPolicy Bypass`, while writing
-    timestamped entries to `C:\_it\psc_sconfig\Logfiles\psc_sconfig.log`.
+    timestamped entries to `C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log`.
 
     Intended usage:
       - Run locally on servers that already have AD DS/DNS/GPMC and/or Hyper-V installed.
@@ -75,22 +75,22 @@
         - Hyper-V + Hyper-V PowerShell for Hyper-V menu
     - PowerShell 5.1+ (or PowerShell 7.x on Windows).
     - Helper scripts available at the expected paths under:
-        C:\_it\ADC_Setup\* and C:\_it\HyperV_Setup\*
+        C:\_psc\ADC_Setup\* and C:\_psc\HyperV_Setup\*
 
 .OUTPUTS
     Console output and log entries written to:
-        C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
+        C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log
 
 .Example
     PS C:\> .\windowsfeaturemanagement.ps1
     Detects installed roles and opens the matching management menu (ADC or Hyper-V).
 
-	PS C:\> powershell.exe -ExecutionPolicy Bypass -File "C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1"
+	PS C:\> powershell.exe -ExecutionPolicy Bypass -File "C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1"
     Runs the role management menus in a new PowerShell process with execution policy bypass.
 #>
 
 # Log file path
-$logFile = "C:\_it\psc_sconfig\Logfiles\psc_sconfig.log"
+$logFile = "C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log"
 
 # Function to log messages with timestamps
 function Write-Log {
@@ -201,7 +201,7 @@ function DNS-Server-Setup {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\1_ad-dns-server-configuration_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\0_DNS_AD_Initial-Setup\1_ad-dns-server-configuration_final.ps1"
         }
         catch{
 			Write-Log " ERROR: Something went wrong!"
@@ -238,7 +238,7 @@ function Domain-Controller-Setup {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\2_ad-setup_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\0_DNS_AD_Initial-Setup\2_ad-setup_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -275,7 +275,7 @@ function Post-Setup-Tasks {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\3_ad-post-setup-tasks_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\0_DNS_AD_Initial-Setup\3_ad-post-setup-tasks_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -307,7 +307,7 @@ function Add-DC {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\0_DNS_AD_Initial-Setup\4_ad-setup_add-dc_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\0_DNS_AD_Initial-Setup\4_ad-setup_add-dc_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -339,7 +339,7 @@ function Import-GPO-Set {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\1_GroupPolicies\1_AddAndImport_GPOSet.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\1_GroupPolicies\1_AddAndImport_GPOSet.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -371,7 +371,7 @@ function Create-Central-Policy-Store {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\1_GroupPolicies\2_CreateCentralPolicyStore.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\1_GroupPolicies\2_CreateCentralPolicyStore.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -403,7 +403,7 @@ function Create-OU-Template {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\2_OU-Template_Import\1_ad-ou-std-creation_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\2_OU-Template_Import\1_ad-ou-std-creation_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -435,7 +435,7 @@ function Create-AD-Groups {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\3_AD_Groups_Import\1_group-import_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\3_AD_Groups_Import\1_group-import_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -467,7 +467,7 @@ function Create-AD-Users {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\4_AD_User_Import\1_user-import_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\4_AD_User_Import\1_user-import_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -499,7 +499,7 @@ function Add-ADUsersToADGroups {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\5_AD_AddUserToGroup\1_ad-adduserstogroups_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\5_AD_AddUserToGroup\1_ad-adduserstogroups_final.ps1"
         }
         catch{
 			Write-Log " Something went wrong!"
@@ -529,7 +529,7 @@ function Link-GPOWithOU {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\6_AD_OU-GPO-Link_Import\1_ou-gpo-link-import_final.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\6_AD_OU-GPO-Link_Import\1_ou-gpo-link-import_final.ps1"
         }
         catch{
             Write-Warning " Something went wrong!"
@@ -558,7 +558,7 @@ function Export-AD-Users {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\AD-bulk-user-export.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\7_AD_User-Export-Import\AD-bulk-user-export.ps1"
         }
         catch{
             Write-Warning " Something went wrong!"
@@ -587,7 +587,7 @@ function Import-AD-Users {
     }
     else{
         try{
-            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\ADC_Setup\7_AD_User-Export-Import\AD-bulk-user-import.ps1"
+            Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\ADC_Setup\7_AD_User-Export-Import\AD-bulk-user-import.ps1"
         }
         catch{
             Write-Warning " Something went wrong!"
@@ -666,7 +666,7 @@ function Create-S2DCluster {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\create_s2d-cluster.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\create_s2d-cluster.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -680,7 +680,7 @@ function Manage-iWARP {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_iwarp.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_iwarp.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -696,7 +696,7 @@ function Manage-HCI-Storage {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_replication.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_replication.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -712,7 +712,7 @@ function Manage-Global-VHD-Location {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_vhd-location.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_vhd-location.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -726,7 +726,7 @@ function Manage-Global-VC-Location {
     Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_vc-location.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_vc-location.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -740,7 +740,7 @@ function Manage-Spanning-NUMA {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_numa.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_numa.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -754,7 +754,7 @@ function Manage-Live-Migration {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_live-migration.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_live-migration.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -768,7 +768,7 @@ function Manage-Storage-Migration {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_storage-migration.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_storage-migration.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -782,7 +782,7 @@ function Manage-Extended-Session-Mode {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_extended-session-mode.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_extended-session-mode.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -798,7 +798,7 @@ function Manage-Replication-Configuration {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_replication.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_replication.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -814,7 +814,7 @@ function Manage-Virtual-Switch-Configuration {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_vmswitch.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_vmswitch.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -828,7 +828,7 @@ function Manage-HyperV-Service {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_hyperv-svc.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_hyperv-svc.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -843,7 +843,7 @@ function Display-HyperV-Status-Information {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\display_hyperv-info.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\display_hyperv-info.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -857,7 +857,7 @@ function VirtualMachine-Management {
 	Clear-Host
 	
     try{
-        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\HyperV_Setup\manage_virtualmachines.ps1"
+        Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\HyperV_Setup\manage_virtualmachines.ps1"
     }
     catch{
 		Write-Log " Something went wrong!"
@@ -906,5 +906,6 @@ elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures
 else {
     # Nothing to display
 }
+
 
 
