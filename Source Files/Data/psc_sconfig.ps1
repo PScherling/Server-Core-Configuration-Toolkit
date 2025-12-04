@@ -34,7 +34,7 @@
       - Admin experience:
           - Clear, colorized console UI with progress messages
           - Robust error handling and warnings
-          - Timestamped logging to: C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
+          - Timestamped logging to: C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log
           - Disables legacy SConfig autolaunch on start (best effort)
 
 	Notes:
@@ -123,16 +123,16 @@
 
 .OUTPUTS
     Console output (colorized) and log file at:
-        C:\_it\psc_sconfig\Logfiles\psc_sconfig.log
+        C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log
 
 .Example
 	PS C:\> psc_sconfig
     (When the module is installed) Starts PSC SConfig via the module launcher.
 	
-    PS C:\> powershell.exe -ExecutionPolicy Bypass -File "C:\_it\psc_sconfig\psc_sconfig.ps1"
+    PS C:\> powershell.exe -ExecutionPolicy Bypass -File "C:\_psc\psc_sconfig\psc_sconfig.ps1"
     Launches PSC SConfig with full interactive menu and logging.
 
-	PS C:\> Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Maximized -File C:\_it\psc_sconfig\psc_sconfig.ps1'
+	PS C:\> Start-Process powershell.exe -ArgumentList '-ExecutionPolicy Bypass -WindowStyle Maximized -File C:\_psc\psc_sconfig\psc_sconfig.ps1'
     Opens PSC SConfig in a new, maximized PowerShell window.
 #>
 
@@ -140,7 +140,7 @@
 $VersionNumber = "0.1.6"
 
 # Log file path
-$logFile = "C:\_it\psc_sconfig\Logfiles\psc_sconfig.log"
+$logFile = "C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log"
 
 # Function to log messages with timestamps
 function Write-Log {
@@ -676,7 +676,7 @@ function Show-Menu {
                 19 { Start-Process powershell.exe -ArgumentList @(
                         '-ExecutionPolicy', 'Bypass',
                         '-WindowStyle', 'Maximized',
-                        '-File', 'C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
+                        '-File', 'C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
                     ) 
                 }
                 default { 
@@ -710,17 +710,17 @@ function Show-Menu {
                 16 { Restart-System }
                 17 { Start-Shutdown-System }
                 18 { Start-Terminal }
-                #19 { Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1" }
+                #19 { Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1" }
                 19 { Start-Process powershell.exe -ArgumentList @(
                         '-ExecutionPolicy', 'Bypass',
                         '-WindowStyle', 'Maximized',
-                        '-File', 'C:\_it\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
+                        '-File', 'C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
                     ) 
                 }
                 20 { Start-Process powershell.exe -ArgumentList @(
                         '-ExecutionPolicy', 'Bypass',
                         '-WindowStyle', 'Maximized',
-                        '-File', 'C:\_it\HPE\custom_Install_HPE-SPP.ps1',
+                        '-File', 'C:\_psc\HPE\custom_Install_HPE-SPP.ps1',
                         '-Update',
                         '-UseISO',
                         '-Mode', 'Manual'
@@ -760,7 +760,7 @@ function Show-Menu {
                 19 { Start-Process powershell.exe -ArgumentList @(
                         '-ExecutionPolicy', 'Bypass',
                         '-WindowStyle', 'Maximized',
-                        '-File', 'C:\_it\HPE\custom_Install_HPE-SPP.ps1',
+                        '-File', 'C:\_psc\HPE\custom_Install_HPE-SPP.ps1',
                         '-Update',
                         '-UseISO',
                         '-Mode', 'Manual'
@@ -4248,7 +4248,7 @@ function Export-History {
     $Hostname = $env:COMPUTERNAME
     $GetUpdateHistory = Get-WUHistory | Select-Object Result,Date,Title #| ft
     $FileName = $Hostname+"_WUHistory_"+$TimeDate+".csv"
-    $FileDir = "C:\_it\WindowsUpdate-History\"
+    $FileDir = "C:\_psc\WindowsUpdate-History\"
     $FilePath = "$FileDir$FileName"
 
     # Ensure the directory exists
@@ -4296,7 +4296,7 @@ function Export-History($UpdateHistory) {
     $HRTimeDate = Get-Date -Format "dd.MM.yyyy HH:mm"
     $Hostname = $env:COMPUTERNAME
     $FileName = $Hostname+"_WUHistory_"+$TimeDate+".csv"
-    $FileDir = "C:\_it\WindowsUpdate-History\"
+    $FileDir = "C:\_psc\WindowsUpdate-History\"
     $FilePath = "$FileDir$FileName"
 
     # Ensure the directory exists
@@ -4933,3 +4933,4 @@ function Start-Terminal {
 #### Main Menu Selection
 ####
 Show-Menu
+
