@@ -75,7 +75,7 @@ https://github.com/PScherling/Hyper-V-Server-Management-Toolkit is required.
 https://github.com/PScherling/HPE-SPP-Installation-Toolkit is required.
 
 Folder Structure:
-`C:\_it\HPE\script.ps1`
+`C:\_psc\HPE\script.ps1`
 
 - **HPE DL Server** (HPE SPP) Update option
   - Run interactively (iLO authentication required) for a manual install using a mounted ISO
@@ -94,7 +94,7 @@ Folder Structure:
 | Path / Script | Purpose |
 |---|---|
 | `Data\` | Copy payload for installers (module files, cmd/launchers, assets). |
-| `Logfiles\` | Runtime log location (created under `C:\_it\psc_sconfig\Logfiles`). |
+| `Logfiles\` | Runtime log location (created under `C:\_psc\psc_sconfig\Logfiles`). |
 | `manual_Install-PSC_Sconfig.ps1` | **Manual/local** installer (uses local `.\Data` payload). |
 | `custom_Install-PSC_Sconfig.ps1` | **Automated (MDT/WDS)** installer from a deployment share. |
 | `Data\launch_psc_sconfig.bat` | For starting and auto-launching the module. |
@@ -123,7 +123,7 @@ Folder Structure:
 ### A) Automated (MDT/WDS) – `custom_Install-PSC_Sconfig.ps1`
 Pulls the payload from your deployment share and installs module + launchers.
 
-- Copies **`\\<FileSrv>\DeploymentShare$\Scripts\custom\psc_sconfig\Data`** → `C:\_it\psc_sconfig`
+- Copies **`\\<FileSrv>\DeploymentShare$\Scripts\custom\psc_sconfig\Data`** → `C:\_psc\psc_sconfig`
 - Creates module path: `C:\Program Files\WindowsPowerShell\Modules\psc_sconfig`
 - Copies `psc_sconfig.psm1/.psd1` into the module path
 - Copies `psc_sconfig.cmd` into `C:\Windows\System32`
@@ -160,9 +160,9 @@ powershell.exe -ExecutionPolicy Bypass -File .\manual_Install-PSC_Sconfig.ps1
 
 - **Module**: `C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\`  
 - **Launcher**: `C:\Windows\System32\psc_sconfig.cmd`  
-- **Main tool**: `C:\_it\psc_sconfig\psc_sconfig.ps1`  
-- **Logs**: `C:\_it\psc_sconfig\Logfiles\psc_sconfig.log`  
-- **Installer logs** (pattern): `C:\_it\Configure_psc_sconfig_<COMPUTER>_<YYYY-MM-DD_HH-mm-ss>.log`  
+- **Main tool**: `C:\_psc\psc_sconfig\psc_sconfig.ps1`  
+- **Logs**: `C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log`  
+- **Installer logs** (pattern): `C:\_psc\Configure_psc_sconfig_<COMPUTER>_<YYYY-MM-DD_HH-mm-ss>.log`  
 - **Desktop/Autostart** (optional): `launch_psc_sconfig.bat`
 
 > Update the installer variables (`$FileSrv`, log share paths, etc.) for your environment.
@@ -183,7 +183,7 @@ psc_sconfig.cmd
 ```
 or run the script directly:
 ```powershell
-powershell.exe -ExecutionPolicy Bypass -File "C:\_it\psc_sconfig\psc_sconfig.ps1"
+powershell.exe -ExecutionPolicy Bypass -File "C:\_psc\psc_sconfig\psc_sconfig.ps1"
 ```
 
 You’ll see the PSC SConfig main menu. Use the numbered options to configure networking, join a domain, manage updates, users, and more. If AD DS / Hyper‑V roles are present, the corresponding **role menus** appear automatically.
@@ -193,7 +193,7 @@ You’ll see the PSC SConfig main menu. Use the numbered options to configure ne
 ## 📝 Logging
 
 - The main tool appends to:  
-  `C:\_it\psc_sconfig\Logfiles\psc_sconfig.log`
+  `C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log`
 - Installers write **timestamped** logs (and the automated installer can upload them to your central log share).
 
 ---
