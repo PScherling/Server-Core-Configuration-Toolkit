@@ -138,7 +138,7 @@ powershell.exe -ExecutionPolicy Bypass -File .\custom_Install-PSC_Sconfig.ps1
 
 ### B) Manual (Local) – `manual_Install-PSC_Sconfig.ps1`
 Installs from local `.\Data` without any server dependency.
-Upload the zip file from 'Manual Installation' somewhere to your system, where you want to install it like to "D:\TEMP" and extract it.
+Upload the contents of 'Data' and the 'manual' installation script file from 'Source Files' somewhere to your system, where you want to install it like to "D:\TEMP".
 
 Run (as Admin):
 ```powershell
