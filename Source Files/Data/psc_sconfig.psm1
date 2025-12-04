@@ -9,7 +9,7 @@
     session with the proper execution policy and window state.
 
     When the `psc_sconfig` function is called, it:
-      - Locates the `psc_sconfig.ps1` script in the local installation directory (`C:\_it\psc_sconfig\`)
+      - Locates the `psc_sconfig.ps1` script in the local installation directory (`C:\_psc\psc_sconfig\`)
       - Launches it in a new, maximized PowerShell window
       - Bypasses script execution policy restrictions to ensure successful execution
       - Logs errors to the console if the launch fails or the file cannot be found
@@ -42,7 +42,7 @@
 #>
 
 function psc_sconfig {
-	$pscsconfig = "C:\_it\psc_sconfig\psc_sconfig.ps1"
+	$pscsconfig = "C:\_psc\psc_sconfig\psc_sconfig.ps1"
 	if($pscsconfig){
 		try{
 			Start-Process -FilePath "$PSHOME\powershell.exe" -ArgumentList "-windowstyle maximized -ExecutionPolicy Bypass -File $pscsconfig" #-PassThru
@@ -58,4 +58,5 @@ function psc_sconfig {
 	}
 
 }
+
 
