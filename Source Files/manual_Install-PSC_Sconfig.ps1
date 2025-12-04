@@ -13,7 +13,7 @@
     The script includes:
       - Dynamic path handling based on the script’s execution location
       - Step-by-step execution with progress feedback and colored console output
-      - Detailed timestamped logging stored locally in `C:\_it`
+      - Detailed timestamped logging stored locally in `C:\_psc`
       - Error handling and warnings for failed operations
 
     This script is intended for **manual local deployment** on systems where the automated or
@@ -53,7 +53,7 @@ function Start-Configuration {
 	# Get the directory where the script is located
 	$scriptDirectory = $PSScriptRoot
 	
-    $dest = "C:\_it\psc_sconfig"
+    $dest = "C:\_psc\psc_sconfig"
     $source = "$scriptDirectory\Data"
 	# Get all files and subdirectories from the source folder, including hidden/system files
 	$items = Get-ChildItem -Path $source -Recurse
@@ -71,7 +71,7 @@ function Start-Configuration {
 	$DateTime = Get-Date -Format "yyyy-MM-dd_HH-mm-ss"
 	$logFileName = "Configure_$($config)_$($CompName)_$($DateTime).log"
 
-	$localLogFilePath = "C:\_it"
+	$localLogFilePath = "C:\_psc"
 	$localLogFile = "$($localLogFilePath)\$($logFileName)"
 	
 	# Function to log messages with timestamps
@@ -100,7 +100,7 @@ function Start-Configuration {
                 # Create Directory
                 try {
                     Write-Log "Creating target directory: $dest"
-                    New-Item -Path "C:\_it\" -Name "psc_sconfig" -ItemType "directory"
+                    New-Item -Path "C:\_psc\" -Name "psc_sconfig" -ItemType "directory"
                 } catch {
                     Write-Log "Error: Directory can not be created: $_"
                     break
@@ -189,7 +189,7 @@ function Start-Configuration {
                 try {
                     Write-Log "Copying psc_sconfig.cmd to System32"
 					Write-Host " Copying psc_sconfig.cmd to System32"
-                    copy-item "C:\_it\psc_sconfig\psc_sconfig.cmd" -Destination "C:\Windows\System32\"
+                    copy-item "C:\_psc\psc_sconfig\psc_sconfig.cmd" -Destination "C:\Windows\System32\"
                     for ($i = 0; $i -le 100; $i = $i + 10) {
                         Write-Progress -Activity "File copy in Progress" -Status "File Copy Progress $i% Complete:" -PercentComplete $i
                         Start-Sleep -Milliseconds 250
@@ -211,7 +211,7 @@ function Start-Configuration {
                 try {
                     Write-Log "Copying psc_sconfig.psm1 to PowerShell Modules"
 					Write-Host " Copying psc_sconfig.psm1 to PowerShell Modules"
-                    copy-item "C:\_it\psc_sconfig\psc_sconfig.psm1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
+                    copy-item "C:\_psc\psc_sconfig\psc_sconfig.psm1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
                 } catch {
                     Write-Log "Error: File copy failed for psc_sconfig.psm1: $_"
 					Write-Warning " Error: File copy failed for psc_sconfig.psm1: $_"
@@ -223,7 +223,7 @@ function Start-Configuration {
                 try {
                     Write-Log "Copying psc_sconfig.psd1 to PowerShell Modules"
 					Write-Host " Copying psc_sconfig.psd1 to PowerShell Modules"
-                    copy-item "C:\_it\psc_sconfig\psc_sconfig.psd1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
+                    copy-item "C:\_psc\psc_sconfig\psc_sconfig.psd1" -Destination "C:\Program Files\WindowsPowerShell\Modules\psc_sconfig\"
                 } catch {
                     Write-Log "Error: File copy failed for psc_sconfig.psd1: $_"
 					Write-Warning " Error: File copy failed for psc_sconfig.psd1: $_"
@@ -261,7 +261,7 @@ function Start-Configuration {
             try {
                 Write-Log "Setting psc_sconfig to autostart at logon"
 				Write-Host " Setting psc_sconfig to autostart at logon"
-                new-itemproperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name psc_sconfig -Value 'C:\_it\psc_sconfig\launch_psc_sconfig.bat'
+                new-itemproperty -Path "HKLM:\Software\Microsoft\Windows\CurrentVersion\Run" -Name psc_sconfig -Value 'C:\_psc\psc_sconfig\launch_psc_sconfig.bat'
             } catch {
                 Write-Log "Error: Failed to set autolaunch for psc_sconfig: $_"
 				Write-Warning " Error: Failed to set autolaunch for psc_sconfig: $_"
@@ -308,6 +308,7 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
 
 
