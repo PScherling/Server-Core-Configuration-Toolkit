@@ -2,7 +2,6 @@
 ![Platform](https://img.shields.io/badge/Platform-Windows-blue)
 ![Audience](https://img.shields.io/badge/Audience-Enterprise-informational)
 ![Server Core](https://img.shields.io/badge/PrimaryTarget-Server%20Core-critical)
-![Server GUI](https://img.shields.io/badge/OptionalTarget-Server%20GUI-informational)
 ![Maintenance](https://img.shields.io/badge/Maintained-Yes-success)
 
 # PSC SConfig – Server Core Configuration Toolkit
