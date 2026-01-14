@@ -29,11 +29,12 @@
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
           Created: 2025-02-03
-          Modified: 2025-02-03
+          Modified: 2026-01-14
 
           Version - 0.0.1 - () - Finalized functional version 1.
 		  Version - 0.0.2 - () - Extended with logging
 		  Version - 0.0.3 - () - Updating Logging
+		  Version - 0.0.4 - (2026-01-14) - Catching a bug in Step 1 in case you have blank spaces in the source path
           
 
           TODO:
@@ -135,9 +136,9 @@ function Start-Configuration {
 						}
 						else {
 							# If it's a file, copy it
-							Write-Host "Download file: $item.FullName to $targetItemPath"
-							Write-Log " Download file: $item.FullName to $targetItemPath"
-							Copy-Item -Path $item.FullName -Destination $targetItemPath -Force
+							Write-Host "Download file: $($item.FullName) to $targetItemPath"
+							Write-Log " Download file: $($item.FullName) to $targetItemPath"
+							Copy-Item -Path "$($item.FullName)" -Destination $targetItemPath -Force
 						}
 						
 						#Progress Bar
@@ -300,6 +301,7 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
 
 
