@@ -34,5 +34,6 @@ Version 0.1.6
 | **0.1.5** | 27/Oct/2025 | Minor Release |  | Changing "LastBoot" format from dd.mmm.yyyy to dd/mmm/yyyy |  |  |
 | **0.1.6** | 05/Nov/2025 | Minor Release |  | Displaying Manucafurer and Model Information (Info is needed for HPE SPP Update functionality anyway); Implementation of HPE SPP Update Functionality |  |  |
 | **0.1.7** | TBD | Feature Update | Adding PSC-SCONFIG Module Update function | Module Update Function |  |  |
+| **0.1.8** | TBD | Hot Fix | Catching a bug in installation scripts in Step 1 in case you have blank spaces in the source path |  |  |  |
 
 
