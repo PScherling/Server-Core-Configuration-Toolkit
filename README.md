@@ -1,6 +1,9 @@
 ![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-blue)
 ![Platform](https://img.shields.io/badge/Platform-Windows-blue)
 ![Audience](https://img.shields.io/badge/Audience-Enterprise-informational)
+![Server Core](https://img.shields.io/badge/PrimaryTarget-Server%20Core-critical)
+![Server GUI](https://img.shields.io/badge/OptionalTarget-Server%20GUI-informational)
+![Maintenance](https://img.shields.io/badge/Maintained-Yes-success)
 
 # PSC SConfig – Server Core Configuration Toolkit
 <img width="1579" height="875" alt="image" src="https://github.com/user-attachments/assets/0ce18da9-a479-44c9-9d8a-66eea30702e8" />
@@ -13,6 +16,19 @@ This repo includes:
 - A lightweight module launcher (`psc_sconfig.psm1`) so you can just type `psc_sconfig`
 - Manual and automated installers (works with MDT)
 - Optional role management menus (ADC/Hyper‑V) via `windowsfeaturemanagement.ps1`
+
+## 📌 Why PSC SConfig?
+
+PSC SConfig is designed as a modern alternative to the built-in Microsoft **SConfig** utility.
+
+While SConfig provides basic post-install configuration options for Server Core, it is intentionally minimal and not optimized for modern administrative workflows, role-aware configuration, or repeatable enterprise deployments.
+
+PSC SConfig extends and modernizes this concept by providing:
+- A structured, menu-driven interface
+- Role-aware functionality (e.g.: AD DS, Hyper-V, HPE tooling)
+- Robust logging and auditing
+- Automation-friendly installation and execution
+- Faster, more consistent post-deployment configuration for administrators
 
 ---
 
