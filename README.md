@@ -1,3 +1,7 @@
+![PowerShell](https://img.shields.io/badge/PowerShell-5.1%2B-blue)
+![Platform](https://img.shields.io/badge/Platform-Windows-blue)
+![Audience](https://img.shields.io/badge/Audience-Enterprise-informational)
+
 # PSC SConfig – Server Core Configuration Toolkit
 <img width="1579" height="875" alt="image" src="https://github.com/user-attachments/assets/0ce18da9-a479-44c9-9d8a-66eea30702e8" />
 <img width="1579" height="564" alt="image" src="https://github.com/user-attachments/assets/5008246f-c581-4573-8c79-429b9239cc88" />
@@ -122,6 +126,8 @@ Folder Structure:
 
 ### A) Automated (MDT/WDS) – `custom_Install-PSC_Sconfig.ps1`
 Pulls the payload from your deployment share and installs module + launchers.
+
+> Ensure that you change the user credential variables to what you need inside the installation script!
 
 - Copies **`\\<FileSrv>\DeploymentShare$\Scripts\custom\psc_sconfig\Data`** → `C:\_psc\psc_sconfig`
 - Creates module path: `C:\Program Files\WindowsPowerShell\Modules\psc_sconfig`
