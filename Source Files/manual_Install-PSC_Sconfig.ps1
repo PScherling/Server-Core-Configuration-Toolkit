@@ -30,10 +30,11 @@
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
           Created: 2025-04-02
-          Modified: 2026-01-14
+          Modified: 2026-02-11
 
           Version - 0.0.1 - () - Finalized functional version 1.
 		  Version - 0.0.2 - (2026-01-14) - Catching a bug in Step 1 in case you have blank spaces in the source path
+		  Version - 0.0.3 - (2026-02-11) - Catching a bug in Step 1 with the progress bar
           
 
           TODO:
@@ -111,13 +112,7 @@ function Start-Configuration {
             try {
                 Write-Log " Copy files from $source to $dest"
 				Write-Host " Copy files from $source to $dest"
-                if (Test-Path $source) {
-                    <#copy-item "$sourceFiles" -Destination "$dest\"
-                    for ($i = 0; $i -le 100; $i = $i + 10) {
-                        Write-Progress -Activity "File Copy in Progress" -Status "File Copy Progress $i% Complete:" -PercentComplete $i
-                        Start-Sleep -Milliseconds 250
-                    }#>
-					
+                if (Test-Path $source) {					
 					# Copy each item individually
 					$i = 0
 					foreach ($item in $items) {
@@ -140,9 +135,16 @@ function Start-Configuration {
 						}
 						
 						#Progress Bar
+						<#
 						$i = $i + 10
 						Write-Progress -Activity "File copy in Progress" -Status "File copy Progress $i% Complete:" -PercentComplete $i
 						Start-Sleep -Milliseconds 250
+						#>
+						
+						for ($i = 0; $i -le 100; $i = $i + 10) {
+	                        Write-Progress -Activity "File copy in Progress" -Status "File Copy Progress $i% Complete:" -PercentComplete $i
+	                        Start-Sleep -Milliseconds 250
+	                    }
 					}
 					
                     Write-Log "File copy completed."
@@ -309,6 +311,7 @@ function Start-Configuration {
 
 
 Start-Configuration
+
 
 
 
