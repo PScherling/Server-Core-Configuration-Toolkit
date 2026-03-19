@@ -139,7 +139,7 @@
 #>
 
 # Version number
-$VersionNumber = "0.1.6"
+$VersionNumber = "0.1.7"
 
 # Log file path
 $logFile = "C:\_psc\psc_sconfig\Logfiles\psc_sconfig.log"
