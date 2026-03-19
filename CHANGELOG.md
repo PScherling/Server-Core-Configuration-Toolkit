@@ -33,7 +33,7 @@ Version 0.1.7
 | **0.1.4** | 16/Sep/2025 | Minor Release |  | OS Build version including minor build number e.g.: '10.0.26100.**4061**'; Displaying information if 'WAC' is installed on domain-controller - https://learn.microsoft.com/en-us/windows-server/manage/windows-admin-center/plan/installation-options |  |  |
 | **0.1.5** | 27/Oct/2025 | Minor Release |  | Changing "LastBoot" format from dd.mmm.yyyy to dd/mmm/yyyy |  |  |
 | **0.1.6** | 05/Nov/2025 | Minor Release |  | Displaying Manucafurer and Model Information (Info is needed for HPE SPP Update functionality anyway); Implementation of HPE SPP Update Functionality |  |  |
-| **0.1.7** | 19/Mar/2026 | Minor Release | Catching a bug in installation scripts in Step 1 in case you have blank spaces in the source path; Check if tool is running with elevated privivledges; New Function "Start-PowerShell" | Start-PowerShell function |  |  |
+| **0.1.7** | 19/Mar/2026 | Minor Release | Resolving an issue in installation scripts in Step 1 in case you have blank spaces in the source path; Check if tool is running with elevated privivledges; New Function "Start-PowerShell" | Start-PowerShell function |  |  |
 | **0.1.8** | TBD | Feature Update | Adding PSC-SCONFIG Module Update function | Module Update Function |  |  |
 
 
