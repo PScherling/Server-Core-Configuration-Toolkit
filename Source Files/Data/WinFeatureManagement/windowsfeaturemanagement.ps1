@@ -61,7 +61,7 @@
 		  Version - 0.0.2 - () - ADC Management
 		  Version - 0.0.3 - () - Hyper-V Management
 		  Version - 0.0.4 - () - Extending ADC Management with AD User Export and Import
-		  Version - 0.0.5 - (2026-03-19) - Check if tool is running with elevated privivledges
+		  Version - 0.0.5 - (2026-03-19) - Check if tool is running with elevated priviledges
 
 
           TODO:
