@@ -73,7 +73,7 @@
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
           Created: 2024-11-01
-          Modified: 2025-11-5
+          Modified: 2026-03-19
 
           Version - 0.0.1 - () - Initial first attempt.
           Version - 0.0.2 - () - Finalized first functional Version
@@ -106,6 +106,8 @@
                                - Changing "seletc"'s to "select-object"'s and fixing other PowerShell syntax issues #unapproved verb!
           Version - 0.1.5 - () - Changing "LastBoot" format from dd.mmm.yyyy to dd/mmm/yyyy 
           Version - 0.1.6 - () - Displaying Manucafurer and Model Information (Info is needed for HPE SPP Update functionality anyway)
+		  Version - 0.1.7 - (2026-03-19) - Check if tool is running with elevated privivledges
+		  								   - New Function "Start-PowerShell"
 
           TODO:
 			Coming Features
@@ -155,6 +157,13 @@ function Write-Log {
 
 # Start logging
 Write-Log " Starting psc_sconfig..."
+
+# Require admin
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $principal.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)) {
+  Write-Log " ERROR: Run PowerShell as Administrator."
+  throw "Run PowerShell as Administrator."
+}
 
 ####
 #### Try to deactivate sconfig
@@ -652,7 +661,7 @@ function Show-Menu {
 
     if($WinFeatureUnlocked -eq "true" -and $manufacturer -ne "HPE"){
         do {
-            $choice = Read-Host " Choose an Option (1-19)"
+            $choice = Read-Host " Choose an Option (1-20)"
 			Write-Log " User Input: $choice"
             switch ($choice) {
                 1 { Set-Hostname }
@@ -673,7 +682,8 @@ function Show-Menu {
                 16 { Restart-System }
                 17 { Start-Shutdown-System }
                 18 { Start-Terminal }
-                19 { Start-Process powershell.exe -ArgumentList @(
+				19 { Start-PowerShell }
+                20 { Start-Process powershell.exe -ArgumentList @(
                         '-ExecutionPolicy', 'Bypass',
                         '-WindowStyle', 'Maximized',
                         '-File', 'C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
@@ -685,9 +695,57 @@ function Show-Menu {
 				}
             }
 
-        } while ($choice -ne {1..19})
+        } while ($choice -ne {1..20})
     }
     elseif($WinFeatureUnlocked -eq "true" -and $manufacturer -eq "HPE") {
+        do {
+            $choice = Read-Host " Choose an Option (1-21)"
+			Write-Log " User Input: $choice"
+            switch ($choice) {
+                1 { Set-Hostname }
+                2 { Open-Network-Configuration }
+                3 { Open-Domain-Configuration }
+                4 { Open-RemoteMGMT-Configuration }
+                5 { Open-RDP-Configuration }
+                6 { Open-WindowsUpdate-Configuration }
+                7 { Open-DateTime-Configuration }
+                8 { Open-DiagnosticData-Configuration }
+                9 { Set-Windows-Activation }
+                10 { Add-LocalUser }
+                11 { Add-LocalAdministrator }
+                12 { Add-LocalGroup }
+				13 { Show-Menu }
+                14 { WindowsUpdates }
+                15 { Start-Log-Off }
+                16 { Restart-System }
+                17 { Start-Shutdown-System }
+                18 { Start-Terminal }
+				19 { Start-PowerShell }
+                #19 { Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1" }
+                20 { Start-Process powershell.exe -ArgumentList @(
+                        '-ExecutionPolicy', 'Bypass',
+                        '-WindowStyle', 'Maximized',
+                        '-File', 'C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
+                    ) 
+                }
+                21 { Start-Process powershell.exe -ArgumentList @(
+                        '-ExecutionPolicy', 'Bypass',
+                        '-WindowStyle', 'Maximized',
+                        '-File', 'C:\_psc\HPE\custom_Install_HPE-SPP.ps1',
+                        '-Update',
+                        '-UseISO',
+                        '-Mode', 'Manual'
+                    )
+                }
+                default { 
+					Write-Log " Wrong Input."
+					Write-Host "Wrong Input. Please choose an option above." 
+				}
+            }
+
+        } while ($choice -ne {1..21})
+    }
+    elseif($WinFeatureUnlocked -ne "true" -and $manufacturer -eq "HPE") {
         do {
             $choice = Read-Host " Choose an Option (1-20)"
 			Write-Log " User Input: $choice"
@@ -710,13 +768,7 @@ function Show-Menu {
                 16 { Restart-System }
                 17 { Start-Shutdown-System }
                 18 { Start-Terminal }
-                #19 { Start-Process powershell.exe -ArgumentList "-executionpolicy bypass -windowstyle maximized -File", "C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1" }
-                19 { Start-Process powershell.exe -ArgumentList @(
-                        '-ExecutionPolicy', 'Bypass',
-                        '-WindowStyle', 'Maximized',
-                        '-File', 'C:\_psc\psc_sconfig\WinFeatureManagement\windowsfeaturemanagement.ps1'
-                    ) 
-                }
+				19 { Start-PowerShell }
                 20 { Start-Process powershell.exe -ArgumentList @(
                         '-ExecutionPolicy', 'Bypass',
                         '-WindowStyle', 'Maximized',
@@ -734,7 +786,7 @@ function Show-Menu {
 
         } while ($choice -ne {1..20})
     }
-    elseif($WinFeatureUnlocked -ne "true" -and $manufacturer -eq "HPE") {
+    else{
         do {
             $choice = Read-Host " Choose an Option (1-19)"
 			Write-Log " User Input: $choice"
@@ -757,15 +809,7 @@ function Show-Menu {
                 16 { Restart-System }
                 17 { Start-Shutdown-System }
                 18 { Start-Terminal }
-                19 { Start-Process powershell.exe -ArgumentList @(
-                        '-ExecutionPolicy', 'Bypass',
-                        '-WindowStyle', 'Maximized',
-                        '-File', 'C:\_psc\HPE\custom_Install_HPE-SPP.ps1',
-                        '-Update',
-                        '-UseISO',
-                        '-Mode', 'Manual'
-                    )
-                }
+				19 { Start-PowerShell }
                 default { 
 					Write-Log " Wrong Input."
 					Write-Host "Wrong Input. Please choose an option above." 
@@ -773,37 +817,6 @@ function Show-Menu {
             }
 
         } while ($choice -ne {1..19})
-    }
-    else{
-        do {
-            $choice = Read-Host " Choose an Option (1-18)"
-			Write-Log " User Input: $choice"
-            switch ($choice) {
-                1 { Set-Hostname }
-                2 { Open-Network-Configuration }
-                3 { Open-Domain-Configuration }
-                4 { Open-RemoteMGMT-Configuration }
-                5 { Open-RDP-Configuration }
-                6 { Open-WindowsUpdate-Configuration }
-                7 { Open-DateTime-Configuration }
-                8 { Open-DiagnosticData-Configuration }
-                9 { Set-Windows-Activation }
-                10 { Add-LocalUser }
-                11 { Add-LocalAdministrator }
-                12 { Add-LocalGroup }
-				13 { Show-Menu }
-                14 { WindowsUpdates }
-                15 { Start-Log-Off }
-                16 { Restart-System }
-                17 { Start-Shutdown-System }
-                18 { Start-Terminal }
-                default { 
-					Write-Log " Wrong Input."
-					Write-Host "Wrong Input. Please choose an option above." 
-				}
-            }
-
-        } while ($choice -ne {1..18})
     }
 }
 
@@ -4924,6 +4937,22 @@ function Start-Terminal {
 		Write-Log " ERROR: New terminal window could not be started.
     Reason: $_"
 		Write-Host -ForegroundColor Red " ERROR: New terminal window could not be started.
+    Reason: $_"
+	}
+}
+
+####
+#### Start-PowerShell
+####
+function Start-PowerShell {
+	Write-Log " Starting new powershell window."
+	try{
+		Start-Process -FilePath "C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe" -verb runas
+	}
+	catch{
+		Write-Log " ERROR: New powershell window could not be started.
+    Reason: $_"
+		Write-Host -ForegroundColor Red " ERROR: New powershell window could not be started.
     Reason: $_"
 	}
 }
