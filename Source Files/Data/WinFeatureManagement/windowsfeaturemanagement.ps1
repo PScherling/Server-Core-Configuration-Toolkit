@@ -55,12 +55,13 @@
           Contact: @Patrick Scherling
           Primary: @Patrick Scherling
           Created: 2024-12-01
-          Modified: 2025-07-02
+          Modified: 2026-03-19
 
           Version - 0.0.1 - () - Initial first attempt. 
 		  Version - 0.0.2 - () - ADC Management
 		  Version - 0.0.3 - () - Hyper-V Management
 		  Version - 0.0.4 - () - Extending ADC Management with AD User Export and Import
+		  Version - 0.0.5 - (2026-03-19) - Check if tool is running with elevated privivledges
 
 
           TODO:
@@ -106,6 +107,12 @@ function Write-Log {
 # Start logging
 Write-Log " Starting psc_sconfig - windowsfeature management..."
 
+# Require admin
+$principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+if (-not $principal.IsInRole([Security.Principal.WindowsBuiltinRole]::Administrator)) {
+  Write-Log " ERROR: Run PowerShell as Administrator."
+  throw "Run PowerShell as Administrator."
+}
 
 ###
 ### ADC Menu
