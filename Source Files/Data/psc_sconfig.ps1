@@ -575,7 +575,8 @@ function Show-Menu {
     15) Log-off user
     16) Restart server
     17) Shut down server
-    18) Open Terminal Window (command line)"
+    18) Open Terminal Window (command line)
+	19) Open PowerShell Window (command line)"
 
     ###
     ### Server Role Specific Options
@@ -585,7 +586,7 @@ function Show-Menu {
     $InstalledWinFeatures = Get-WindowsFeature | Where-Object { $_.Installed -eq $true }
 
     if($InstalledWinFeatures.Name -contains "AD-Domain-Services" -and $InstalledWinFeatures.Name -contains "DNS" -and $InstalledWinFeatures.Name -contains "GPMC"){
-        Write-Host -ForegroundColor Yellow "    19) Active-Directory Management"
+        Write-Host -ForegroundColor Yellow "    20) Active-Directory Management"
         $WinFeatureUnlocked = "true"
 		
 		Write-Host "-----------------------------------------------------------------------------------"
@@ -602,13 +603,13 @@ function Show-Menu {
 		Write-Host "-----------------------------------------------------------------------------------"
     }
 	elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures.Name -contains "Hyper-V-Powershell"){
-        Write-Host -ForegroundColor Yellow "    19) Hyper-V Management"
+        Write-Host -ForegroundColor Yellow "    20) Hyper-V Management"
         $WinFeatureUnlocked = "true"
     }
     elseif($InstalledWinFeatures.Name -contains "AD-Domain-Services" -and $InstalledWinFeatures.Name -contains "DNS" -and $InstalledWinFeatures.Name -contains "GPMC") {
-        Write-Host -ForegroundColor Yellow "    19) Active-Directory Management"
+        Write-Host -ForegroundColor Yellow "    20) Active-Directory Management"
         if($manufacturer -eq "HPE"){
-            Write-Host -ForegroundColor Yellow "    20) Install HPE SPP via ISO"
+            Write-Host -ForegroundColor Yellow "    21) Install HPE SPP via ISO"
         }
         $WinFeatureUnlocked = "true"
 		
@@ -626,9 +627,9 @@ function Show-Menu {
 		Write-Host "-----------------------------------------------------------------------------------"
     }
     elseif($InstalledWinFeatures.Name -contains "Hyper-V" -and $InstalledWinFeatures.Name -contains "Hyper-V-Powershell"){
-        Write-Host -ForegroundColor Yellow "    19) Hyper-V Management"
+        Write-Host -ForegroundColor Yellow "    20) Hyper-V Management"
         if($manufacturer -eq "HPE"){
-            Write-Host -ForegroundColor Yellow "    20) Install HPE SPP via ISO"
+            Write-Host -ForegroundColor Yellow "    21) Install HPE SPP via ISO"
         }
         $WinFeatureUnlocked = "true"
     }
